@@ -1,8 +1,30 @@
-<html>
-  <head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/index.css">
   <title>window.art</title>
-  </head>
-  <body>
-    <img src="https://firebasestorage.googleapis.com/v0/b/artell-portfolio.appspot.com/o/artists%2Fjdn2D2nH6XfRlmiu8ZzgpIRRFOg2%2Farts%2F9heiFgBXltxTvMNUlasL%2Fsumbnail.jpg?alt=media&token=af6167ab-1a3b-4b23-b120-90acf4e60450" />
-  </body>
+</head>
+<body>
+  <div class="img-wrapper">
+    <a href="https://google.com">
+      <img id="works" src="https://www.artagenda.jp/img/event/3562/main_1.jpg" alt="">
+      <!-- <img src="https://firebasestorage.googleapis.com/v0/b/artell-portfolio.appspot.com/o/artists%2Fjdn2D2nH6XfRlmiu8ZzgpIRRFOg2%2Farts%2F9heiFgBXltxTvMNUlasL%2Fsumbnail.jpg?alt=media&token=af6167ab-1a3b-4b23-b120-90acf4e60450" /> -->
+      <div id="caption">
+        <h1 class="title" >vol.6</h1>
+        <p class="artist">$howgotakeucci</p>
+        <p class="service">window.art(works)</p>
+      </div>
+    </a>
+  </div>
+</body>
 </html>
+<script>
+  var img = document.getElementById("works");
+  var caption = document.getElementById("caption");
+  // imgのwidthに合わせて、キャプションのwidthを決定する
+  img.onload = () => {
+    caption.style.width = img.width + "px"
+  }
+</script>
