@@ -1,0 +1,9 @@
+{
+  "name": "window.art",
+  "version": "0.1",
+  "description": "window.art",
+  "chrome_url_overrides" : {
+    "newtab": "newtab.html"
+  },
+  "manifest_version": 2
+}
