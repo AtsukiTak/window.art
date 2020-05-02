@@ -26,6 +26,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "artell-infra"
+version = "0.1.0"
+dependencies = [
+ "artell-domain",
+ "diesel",
+]
+
+[[package]]
 name = "async-trait"
 version = "0.1.30"
 source = "registry+https://github.com/rust-lang/crates.io-index"
