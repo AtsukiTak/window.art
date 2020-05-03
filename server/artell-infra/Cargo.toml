@@ -8,4 +8,10 @@ edition = "2018"
 
 [dependencies]
 artell-domain = { path = "../artell-domain" }
-diesel = { version = "1.4", features = ["sqlite"] }
+
+anyhow = "1.0"
+async-trait = "0.1"
+diesel = { version = "1.4", features = ["postgres", "r2d2", "chrono", "uuid", "uuidv07"] }
+lazycell = "1.2"
+tokio = { version = "0.2", features = ["macros", "rt-threaded", "blocking"] }
+uuid = "0.8"

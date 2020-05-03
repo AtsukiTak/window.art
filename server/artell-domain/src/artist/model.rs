@@ -41,3 +41,9 @@ impl ArtistId {
         ArtistId(Uuid::new_v4())
     }
 }
+
+impl AsRef<Uuid> for ArtistId {
+    fn as_ref(&self) -> &Uuid {
+        &self.0
+    }
+}
