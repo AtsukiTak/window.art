@@ -19,8 +19,16 @@ impl Artist {
         description: String,
         instagram: String,
         twitter: String,
-    ) -> Self {
-        Artist {
+    ) -> anyhow::Result<Self> {
+        if name.is_empty() {
+            return Err(anyhow::anyhow!("name is empty"));
+        }
+
+        if email.is_empty() {
+            return Err(anyhow::anyhow!("email is empty"));
+        }
+
+        Ok(Artist {
             id: ArtistId::new(),
             name,
             email,
@@ -28,7 +36,25 @@ impl Artist {
             description,
             instagram,
             twitter,
+        })
+    }
+
+    pub fn update_name(&mut self, name: String) -> anyhow::Result<()> {
+        if name.is_empty() {
+            return Err(anyhow::anyhow!("name is empty"));
         }
+
+        self.name = name;
+
+        Ok(())
+    }
+
+    pub fn update_status_msg(&mut self, status_msg: String) {
+        self.status_msg = status_msg;
+    }
+
+    pub fn update_description(&mut self, description: String) {
+        self.description = description;
     }
 }
 
