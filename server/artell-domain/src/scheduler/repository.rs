@@ -1,4 +1,6 @@
-#[asynt_trait]
+use super::Scheduler;
+
+#[async_trait]
 pub trait SchedulerRepository {
     async fn find(&self) -> anyhow::Result<Option<Scheduler>>;
 
