@@ -15,6 +15,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "artell-app"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "artell-domain",
+ "serde",
+]
+
+[[package]]
 name = "artell-domain"
 version = "0.1.0"
 dependencies = [
