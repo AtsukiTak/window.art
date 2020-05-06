@@ -28,6 +28,9 @@ pub enum Error {
 impl Art {
     // Artistがちゃんと存在しているという制約はどこに入れる？
     // Application Service?
+    //
+    // ArtistIdが存在している => Artistが存在している
+    // が成り立つようにする
     pub fn new(artist_id: ArtistId, title: String, image_id: ImageId) -> Result<Self, Error> {
         if title.is_empty() {
             return Err(Error::InvalidArgument("title"));

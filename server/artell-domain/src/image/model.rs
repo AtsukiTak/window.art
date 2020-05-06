@@ -10,8 +10,9 @@ pub struct Image {
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct ImageId(pub Uuid);
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Error, Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Error {
+    #[error("invalid data")]
     InvalidData,
 }
 

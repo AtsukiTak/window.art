@@ -1,5 +1,7 @@
 use artell_domain::artist::{Artist, ArtistId, ArtistRepository};
 
+/// TODO
+/// 認証
 pub async fn add_artist<AR>(
     name: String,
     email: String,
