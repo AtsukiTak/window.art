@@ -5,4 +5,5 @@ extern crate async_trait;
 
 pub mod art;
 pub mod artist;
+pub mod image;
 pub mod scheduler;
