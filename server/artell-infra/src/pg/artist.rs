@@ -9,7 +9,7 @@ pub struct PgArtistRepository {
 
 #[async_trait]
 impl ArtistRepository for PgArtistRepository {
-    async fn find_by_id(&self, id: ArtistId) -> anyhow::Result<Option<Artist>> {
+    async fn find_by_id(&self, id: Uuid) -> anyhow::Result<Option<Artist>> {
         #[derive(Queryable)]
         struct QueriedArtist {
             id: Uuid,
@@ -24,7 +24,7 @@ impl ArtistRepository for PgArtistRepository {
         self.pg
             .try_with_conn(move |conn| {
                 Ok(artists::table
-                    .filter(artists::id.eq(id.as_ref()))
+                    .filter(artists::id.eq(id))
                     .select((
                         artists::id,
                         artists::name,

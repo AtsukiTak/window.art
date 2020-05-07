@@ -1,6 +1,6 @@
 use artell_domain::{
     art::{Art, ArtRepository, Error as ArtDomainError},
-    artist::{ArtistId, ArtistRepository},
+    artist::ArtistRepository,
     image::{Error as ImageDomainError, Image, ImageRepository},
 };
 use bytes::Bytes;
@@ -31,8 +31,8 @@ pub async fn add_art(
     image_repo: impl ImageRepository,
 ) -> Result<Uuid, Error> {
     // Artistが存在することを確認
-    artist_repo
-        .find_by_id(ArtistId(params.artist_id))
+    let artist = artist_repo
+        .find_by_id(params.artist_id)
         .await?
         .ok_or(Error::ArtistNotFound)?;
 
@@ -42,7 +42,7 @@ pub async fn add_art(
     image_repo.save(image).await?;
 
     // artを作成、保存
-    let art = Art::new(ArtistId(params.artist_id), params.title, image_id)?;
+    let art = Art::new(artist.id, params.title, image_id)?;
     let art_id = art.id;
     art_repo.save(art).await?;
 

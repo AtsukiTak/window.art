@@ -19,7 +19,7 @@ where
         .ok_or_else(|| anyhow::anyhow!("Scheduler is not initialized"))?;
 
     let art = art_repo
-        .find_by_id(scheduler.current_art_id)
+        .find_by_id(scheduler.current_art_id.0)
         .await?
         .expect("Infallible");
 
