@@ -1,6 +1,7 @@
 mod art;
 mod artist;
 mod postgres;
+pub mod scheduler;
 #[allow(unused_imports)]
 mod schema;
 

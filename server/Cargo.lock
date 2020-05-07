@@ -52,6 +52,7 @@ dependencies = [
  "anyhow",
  "artell-domain",
  "async-trait",
+ "chrono",
  "diesel",
  "lazycell",
  "tokio",
