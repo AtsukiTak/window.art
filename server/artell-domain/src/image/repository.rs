@@ -1,9 +1,9 @@
-use super::Image;
-use uuid::Uuid;
+use super::{Image, ImageId};
+use std::path::PathBuf;
 
 #[async_trait]
 pub trait ImageRepository {
-    async fn find_by_id(&self, id: Uuid) -> anyhow::Result<Option<Image>>;
+    fn path_to(&self, image_id: &ImageId) -> PathBuf;
 
     async fn save(&self, image: Image) -> anyhow::Result<()>;
 }
