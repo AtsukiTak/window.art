@@ -14,7 +14,7 @@ pub struct ReqBody {
     twitter: String,
 }
 
-pub fn route() -> impl Filter<Extract = (Response,), Error = Rejection> {
+pub fn route() -> impl Filter<Extract = (Response,), Error = Rejection> + Clone {
     warp::path!("admin" / "add_artist")
         .and(warp::filters::method::post())
         .and(warp::filters::body::json::<ReqBody>())
