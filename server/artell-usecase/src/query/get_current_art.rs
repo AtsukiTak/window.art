@@ -1,30 +1,24 @@
-use artell_domain::{art::ArtRepository, scheduler::SchedulerRepository};
-
-#[derive(Serialize)]
-pub struct Res {
-    title: String,
-    image_url: String,
-}
+use artell_domain::{
+    art::{Art, ArtRepository},
+    scheduler::SchedulerRepository,
+};
 
 /// TODO
 /// Authorization
-pub async fn get_current_art<SR, AR>(scheduler_repo: &SR, art_repo: &AR) -> anyhow::Result<Res>
-where
-    SR: SchedulerRepository,
-    AR: ArtRepository,
-{
+pub async fn get_current_art(
+    scheduler_repo: impl SchedulerRepository,
+    art_repo: impl ArtRepository,
+) -> anyhow::Result<Option<Art>> {
     let scheduler = scheduler_repo
         .find()
         .await?
         .ok_or_else(|| anyhow::anyhow!("Scheduler is not initialized"))?;
 
-    let art = art_repo
-        .find_by_id(scheduler.current_art_id.0)
-        .await?
-        .expect("Infallible");
+    if let Some(art_id) = scheduler.current_art_id().copied() {
+        let art = art_repo.find_by_id(art_id.0).await?.expect("Infallible");
 
-    Ok(Res {
-        title: art.title,
-        image_url: format!("/images/arts/${}.png", art.id),
-    })
+        Ok(Some(art))
+    } else {
+        Ok(None)
+    }
 }

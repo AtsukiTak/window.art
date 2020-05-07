@@ -2,8 +2,7 @@ use crate::art::ArtId;
 use chrono::{DateTime, Utc};
 
 pub struct Scheduler {
-    pub current_art_id: ArtId,
-    pub waiting_list: Vec<Schedule>,
+    pub schedules: Vec<Schedule>,
 }
 
 pub struct Schedule {
@@ -11,38 +10,46 @@ pub struct Schedule {
     pub activate_at: DateTime<Utc>,
 }
 
+/*
+ * ==========
+ * Query
+ * ==========
+ */
 impl Scheduler {
-    pub fn new(current_art_id: ArtId) -> Scheduler {
+    pub fn current_art_id(&self) -> Option<&ArtId> {
+        self.schedules.first().map(|sch| &sch.art_id)
+    }
+}
+
+impl Scheduler {
+    pub fn new() -> Scheduler {
         Scheduler {
-            current_art_id,
-            waiting_list: Vec::new(),
+            schedules: Vec::new(),
         }
     }
 
     /// `activate_at` が過去の時間でも追加できる。
     /// その場合、次の `check_update` 時にそのArtが適用される
     pub fn add_schedule(&mut self, art_id: ArtId, activate_at: DateTime<Utc>) {
-        self.waiting_list.push(Schedule {
+        self.schedules.push(Schedule {
             art_id,
             activate_at,
         });
-        self.waiting_list.sort_unstable_by_key(|s| s.activate_at);
+        self.schedules.sort_unstable_by_key(|s| s.activate_at);
     }
 
-    /// `waiting_list` の中で最もactivateが早いもの
-    /// かつすでにactivate時間が過ぎているものを
-    /// `current_art_id` に更新する
+    /// 2番目のScheduleの開始時間がすぎていれば、
+    /// それを1番目にする。
     /// 更新したかどうかをboolで返す
     pub fn check_update(&mut self) -> bool {
         let need_update = self
-            .waiting_list
-            .first()
+            .schedules
+            .get(1)
             .map(|next| next.activate_at <= Utc::now())
             .unwrap_or(false);
 
         if need_update {
-            let next = self.waiting_list.remove(0);
-            self.current_art_id = next.art_id;
+            self.schedules.remove(0);
         }
 
         need_update
