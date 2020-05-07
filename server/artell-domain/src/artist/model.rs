@@ -11,6 +11,14 @@ pub struct Artist {
     pub twitter: String,
 }
 
+#[derive(Error, Debug)]
+pub enum Error {
+    #[error("name must not be empty")]
+    EmptyName,
+    #[error("email must not be empty")]
+    EmptyEmail,
+}
+
 impl Artist {
     pub fn new(
         name: String,
@@ -19,13 +27,13 @@ impl Artist {
         description: String,
         instagram: String,
         twitter: String,
-    ) -> anyhow::Result<Self> {
+    ) -> Result<Self, Error> {
         if name.is_empty() {
-            return Err(anyhow::anyhow!("name is empty"));
+            return Err(Error::EmptyName);
         }
 
         if email.is_empty() {
-            return Err(anyhow::anyhow!("email is empty"));
+            return Err(Error::EmptyEmail);
         }
 
         Ok(Artist {
@@ -39,9 +47,9 @@ impl Artist {
         })
     }
 
-    pub fn update_name(&mut self, name: String) -> anyhow::Result<()> {
+    pub fn update_name(&mut self, name: String) -> Result<(), Error> {
         if name.is_empty() {
-            return Err(anyhow::anyhow!("name is empty"));
+            return Err(Error::EmptyName);
         }
 
         self.name = name;

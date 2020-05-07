@@ -17,7 +17,7 @@ pub enum Error {
     Others(#[from] anyhow::Error),
 }
 
-pub async fn add_schedule(
+pub async fn admin_add_schedule(
     params: Params,
     art_repo: impl ArtRepository,
     scheduler_repo: impl SchedulerRepository,

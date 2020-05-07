@@ -24,7 +24,7 @@ pub enum Error {
     Others(#[from] anyhow::Error),
 }
 
-pub async fn add_art(
+pub async fn artist_add_art(
     params: AddArtParams,
     artist_repo: impl ArtistRepository,
     art_repo: impl ArtRepository,
