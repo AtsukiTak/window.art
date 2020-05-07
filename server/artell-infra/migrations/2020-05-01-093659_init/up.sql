@@ -7,3 +7,24 @@ CREATE TABLE artists (
   instagram   TEXT NOT NULL,
   twitter     TEXT NOT NULL
 );
+
+CREATE TABLE arts (
+  id        UUID PRIMARY KEY,
+  artist_id UUID NOT NULL,
+  title     TEXT NOT NULL,
+  image_id  UUID NOT NULL,
+
+  CONSTRAINT art_artist_fkey FOREIGN KEY (artist_id)
+    REFERENCES artists (id) ON UPDATE RESTRICT ON DELETE RESTRICT
+);
+
+CREATE TABLE schedules (
+  id            SERIAL PRIMARY KEY,
+  art_id        UUID NOT NULL,
+  activate_at   TIMESTAMPTZ NOT NULL,
+  is_scheduled  BOOLEAN NOT NULL DEFAULT TRUE,
+
+  UNIQUE (art_id, activate_at),
+  CONSTRAINT schedule_art_fkey FOREIGN KEY (art_id)
+    REFERENCES arts (id) ON UPDATE RESTRICT ON DELETE RESTRICT
+);

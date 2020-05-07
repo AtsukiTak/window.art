@@ -9,3 +9,30 @@ table! {
         twitter -> Text,
     }
 }
+
+table! {
+    arts (id) {
+        id -> Uuid,
+        artist_id -> Uuid,
+        title -> Text,
+        image_id -> Uuid,
+    }
+}
+
+table! {
+    schedules (id) {
+        id -> Int4,
+        art_id -> Uuid,
+        activate_at -> Timestamptz,
+        is_scheduled -> Bool,
+    }
+}
+
+joinable!(arts -> artists (artist_id));
+joinable!(schedules -> arts (art_id));
+
+allow_tables_to_appear_in_same_query!(
+    artists,
+    arts,
+    schedules,
+);
