@@ -15,19 +15,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "artell-app"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "artell-domain",
- "bytes",
- "chrono",
- "serde",
- "thiserror",
- "uuid 0.8.1",
-]
-
-[[package]]
 name = "artell-domain"
 version = "0.1.0"
 dependencies = [
@@ -50,6 +37,19 @@ dependencies = [
  "diesel",
  "lazycell",
  "tokio",
+ "uuid 0.8.1",
+]
+
+[[package]]
+name = "artell-usecase"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "artell-domain",
+ "bytes",
+ "chrono",
+ "serde",
+ "thiserror",
  "uuid 0.8.1",
 ]
 

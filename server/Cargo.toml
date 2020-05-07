@@ -1,7 +1,7 @@
 [workspace]
 members = [
   "artell",
-  "artell-domain",
+  "artell-usecase",
   "artell-infra",
-  "artell-app"
+  "artell-domain"
 ]
