@@ -7,6 +7,12 @@ pub struct PgArtistRepository {
     pg: Postgres,
 }
 
+impl PgArtistRepository {
+    pub fn new(pg: Postgres) -> Self {
+        PgArtistRepository { pg }
+    }
+}
+
 #[async_trait]
 impl ArtistRepository for PgArtistRepository {
     async fn find_by_id(&self, id: Uuid) -> anyhow::Result<Option<Artist>> {

@@ -5,7 +5,7 @@ use diesel::{
     r2d2::{ConnectionManager, Pool as PgPool, PooledConnection},
 };
 
-pub static GLOBAL_PG: GlobalPostgres = GlobalPostgres {
+static GLOBAL_PG: GlobalPostgres = GlobalPostgres {
     inner: AtomicLazyCell::NONE,
 };
 
@@ -20,11 +20,9 @@ impl GlobalPostgres {
             .fill(Postgres::new(url))
             .map_err(|_| anyhow::anyhow!("GlobalPostgres is already initialized"))
     }
-}
 
-impl AsRef<Postgres> for GlobalPostgres {
-    fn as_ref(&self) -> &Postgres {
-        self.inner.borrow().unwrap()
+    pub fn get() -> Postgres {
+        GLOBAL_PG.inner.borrow().unwrap().clone()
     }
 }
 
@@ -33,7 +31,7 @@ impl AsRef<Postgres> for GlobalPostgres {
  * Internals
  * =========
  */
-type Connection = PooledConnection<ConnectionManager<PgConnection>>;
+pub type Connection = PooledConnection<ConnectionManager<PgConnection>>;
 
 #[derive(Clone)]
 pub struct Postgres {

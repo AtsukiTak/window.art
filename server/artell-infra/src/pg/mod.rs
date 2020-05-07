@@ -4,4 +4,4 @@ mod postgres;
 mod schema;
 
 pub use artist::PgArtistRepository;
-pub use postgres::{GlobalPostgres, Postgres, GLOBAL_PG};
+pub use postgres::{Connection, GlobalPostgres, Postgres};
