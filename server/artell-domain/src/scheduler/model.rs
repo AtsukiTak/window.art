@@ -32,7 +32,8 @@ impl Scheduler {
     /// `waiting_list` の中で最もactivateが早いもの
     /// かつすでにactivate時間が過ぎているものを
     /// `current_art_id` に更新する
-    pub fn check_update(&mut self) {
+    /// 更新したかどうかをboolで返す
+    pub fn check_update(&mut self) -> bool {
         let need_update = self
             .waiting_list
             .first()
@@ -43,5 +44,7 @@ impl Scheduler {
             let next = self.waiting_list.remove(0);
             self.current_art_id = next.art_id;
         }
+
+        need_update
     }
 }
