@@ -6,7 +6,7 @@ use artell_domain::{
 use bytes::Bytes;
 use uuid::Uuid;
 
-pub struct AddArtParams {
+pub struct Params {
     pub artist_id: Uuid,
     pub title: String,
     pub image_data: Bytes,
@@ -17,15 +17,15 @@ pub enum Error {
     #[error("artist not found")]
     ArtistNotFound,
     #[error("image domain invariance violation")]
-    ImageDomainInvariance(#[from] ImageDomainError),
+    ImageDomainViolation(#[from] ImageDomainError),
     #[error("art domain invariance violation")]
-    ArtDomainInvarianceViolation(#[from] ArtDomainError),
+    ArtDomainViolation(#[from] ArtDomainError),
     #[error(transparent)]
     Others(#[from] anyhow::Error),
 }
 
-pub async fn artist_add_art(
-    params: AddArtParams,
+pub async fn admin_add_art(
+    params: Params,
     artist_repo: impl ArtistRepository,
     art_repo: impl ArtRepository,
     image_repo: impl ImageRepository,

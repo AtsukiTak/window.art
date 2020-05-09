@@ -22,6 +22,8 @@ dependencies = [
  "anyhow",
  "artell-infra",
  "artell-usecase",
+ "base64 0.12.0",
+ "bytes",
  "chrono",
  "futures",
  "http",
