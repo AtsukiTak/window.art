@@ -3,7 +3,7 @@ use artell_infra::{
     pg::{GlobalPostgres, PgArtRepository, PgSchedulerRepository},
     s3::S3ImageRepository,
 };
-use artell_usecase::query::get_current_art as usecase;
+use artell_usecase::user::get_current_art as usecase;
 use http::StatusCode;
 use uuid::Uuid;
 use warp::{reject::Rejection, Filter};

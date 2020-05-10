@@ -1,6 +1,6 @@
 use crate::res::{handler_fn, response, Error, Response};
 use artell_infra::pg::{GlobalPostgres, PgArtRepository, PgSchedulerRepository};
-use artell_usecase::command::admin_add_schedule as usecase;
+use artell_usecase::admin::add_schedule as usecase;
 use chrono::{DateTime, Utc};
 use http::StatusCode;
 use uuid::Uuid;

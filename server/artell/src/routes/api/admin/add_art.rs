@@ -3,7 +3,7 @@ use artell_infra::{
     pg::{GlobalPostgres, PgArtRepository, PgArtistRepository},
     s3::S3ImageRepository,
 };
-use artell_usecase::command::admin_add_art as usecase;
+use artell_usecase::admin::add_art as usecase;
 use bytes::Bytes;
 use http::StatusCode;
 use uuid::Uuid;

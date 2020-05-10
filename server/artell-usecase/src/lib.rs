@@ -1,5 +1,6 @@
 #[macro_use]
 extern crate thiserror;
 
-pub mod command;
-pub mod query;
+pub mod admin;
+pub mod system;
+pub mod user;

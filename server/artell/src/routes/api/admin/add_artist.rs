@@ -1,6 +1,6 @@
 use crate::res::{handler_fn, response, Error, Response};
 use artell_infra::pg::{GlobalPostgres, PgArtistRepository};
-use artell_usecase::command::admin_add_artist::{admin_add_artist, Error as AppError, Params};
+use artell_usecase::admin::add_artist::{admin_add_artist, Error as AppError, Params};
 use http::StatusCode;
 use warp::{reject::Rejection, Filter};
 
