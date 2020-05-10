@@ -5,8 +5,13 @@ pub mod res;
 pub mod routes;
 pub mod server;
 
+use artell_infra::pg::GlobalPostgres;
+
 #[tokio::main]
 async fn main() {
+    let db_url = get_env_var_or_panic("DATABASE_URL");
+    GlobalPostgres::initialize(db_url).unwrap();
+
     let port = get_env_var_u16_or_panic("PORT");
 
     server::bind(([0, 0, 0, 0], port)).await
