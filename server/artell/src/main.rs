@@ -1,3 +1,4 @@
+extern crate openssl;
 #[macro_use]
 extern crate serde;
 
@@ -9,6 +10,9 @@ use artell_infra::pg::GlobalPostgres;
 
 #[tokio::main]
 async fn main() {
+    pretty_env_logger::init();
+    openssl_probe::init_ssl_cert_env_vars();
+
     let db_url = get_env_var_or_panic("DATABASE_URL");
     GlobalPostgres::initialize(db_url).unwrap();
 
