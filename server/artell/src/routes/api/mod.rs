@@ -1,4 +1,5 @@
 pub mod admin;
+pub mod user;
 
 use warp::{filters::path, Filter, Rejection, Reply};
 
@@ -36,7 +37,12 @@ macro_rules! boxed_on_debug {
 pub fn route() -> impl Filter<Extract = (impl Reply,), Error = Rejection> + Clone {
     let mount = path::path("api").and(path::path("v1"));
 
-    let routes = combine!(admin::add_artist::route());
+    let routes = combine!(
+        user::get_current_art::route(),
+        admin::add_art::route(),
+        admin::add_schedule::route(),
+        admin::add_artist::route()
+    );
 
     mount.and(routes)
 }
