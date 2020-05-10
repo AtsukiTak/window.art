@@ -5,15 +5,23 @@ use uuid::Uuid;
 pub struct Image {
     pub id: ImageId,
     pub data: Bytes,
+    pub format: ImageFormat,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct ImageId(pub Uuid);
 
-#[derive(Error, Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum ImageFormat {
+    Png,
+}
+
+#[derive(Error, Debug)]
 pub enum Error {
-    #[error("invalid data")]
-    InvalidData,
+    #[error("format {0:?} is not supported")]
+    UnsupportedFormat(image::ImageFormat),
+    #[error("image error")]
+    ImageError(#[from] image::error::ImageError),
 }
 
 /*
@@ -22,8 +30,12 @@ pub enum Error {
  * ========
  */
 impl Image {
-    pub fn path(&self) -> String {
-        format!("{}.png", self.id.0)
+    pub fn name(&self) -> String {
+        let extension = match self.format {
+            ImageFormat::Png => "png",
+        };
+
+        format!("{}.{}", self.id.0, extension)
     }
 }
 
@@ -34,12 +46,15 @@ impl Image {
  */
 impl Image {
     pub fn new(data: Bytes) -> Result<Self, Error> {
-        // TODO
-        // validate data
+        let format = match image::guess_format(&data)? {
+            image::ImageFormat::Png => ImageFormat::Png,
+            f => return Err(Error::UnsupportedFormat(f)),
+        };
 
         Ok(Image {
             id: ImageId(Uuid::new_v4()),
             data,
+            format,
         })
     }
 }
