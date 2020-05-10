@@ -38,11 +38,11 @@ pub async fn admin_add_art(
 
     // imageを保存
     let image = Image::new(params.image_data)?;
-    let image_id = image.id;
+    let image_name = image.name.clone();
     image_repo.save(image).await?;
 
     // artを作成、保存
-    let art = Art::new(artist.id, params.title, image_id)?;
+    let art = Art::new(artist.id, params.title, image_name)?;
     let art_id = art.id;
     art_repo.save(art).await?;
 

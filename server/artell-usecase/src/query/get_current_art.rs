@@ -3,11 +3,10 @@ use artell_domain::{
     image::ImageRepository,
     scheduler::SchedulerRepository,
 };
-use std::path::PathBuf;
 
 pub struct Res {
     pub art: Art,
-    pub image_path: PathBuf,
+    pub image_url: String,
 }
 
 /// TODO
@@ -24,9 +23,9 @@ pub async fn get_current_art(
 
     if let Some(art_id) = scheduler.current_art_id().copied() {
         let art = art_repo.find_by_id(art_id.0).await?.expect("Infallible");
-        let image_path = image_repo.path_to(&art.image_id);
+        let image_url = image_repo.url_to(art.image_name.as_str());
 
-        Ok(Some(Res { art, image_path }))
+        Ok(Some(Res { art, image_url }))
     } else {
         Ok(None)
     }
