@@ -15,16 +15,16 @@ impl FsImageRepository {
 
 #[async_trait]
 impl ImageRepository for FsImageRepository {
-    fn url_to(&self, image: &Image) -> String {
+    fn url_to(&self, image_name: &str) -> String {
         self.path
-            .with_file_name(image.name())
+            .with_file_name(image_name)
             .into_os_string()
             .into_string()
             .unwrap()
     }
 
     async fn save(&self, image: Image) -> anyhow::Result<()> {
-        let path = self.url_to(&image);
+        let path = self.url_to(image.name.as_str());
         std::fs::write(path, image.data)?;
         Ok(())
     }

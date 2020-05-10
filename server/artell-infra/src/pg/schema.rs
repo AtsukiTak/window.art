@@ -15,7 +15,7 @@ table! {
         id -> Uuid,
         artist_id -> Uuid,
         title -> Text,
-        image_id -> Uuid,
+        image_name -> Text,
     }
 }
 

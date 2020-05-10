@@ -9,10 +9,10 @@ CREATE TABLE artists (
 );
 
 CREATE TABLE arts (
-  id        UUID PRIMARY KEY,
-  artist_id UUID NOT NULL,
-  title     TEXT NOT NULL,
-  image_id  UUID NOT NULL,
+  id          UUID PRIMARY KEY,
+  artist_id   UUID NOT NULL,
+  title       TEXT NOT NULL,
+  image_name  TEXT NOT NULL,
 
   CONSTRAINT art_artist_fkey FOREIGN KEY (artist_id)
     REFERENCES artists (id) ON UPDATE RESTRICT ON DELETE RESTRICT

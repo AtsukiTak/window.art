@@ -2,7 +2,6 @@ use super::{schema::arts, Connection, Postgres};
 use artell_domain::{
     art::{Art, ArtId, ArtRepository},
     artist::ArtistId,
-    image::ImageId,
 };
 use diesel::prelude::*;
 use uuid::Uuid;
@@ -40,7 +39,7 @@ struct QueriedArt {
     id: Uuid,
     artist_id: Uuid,
     title: String,
-    image_id: Uuid,
+    image_name: String,
 }
 
 impl Into<Art> for QueriedArt {
@@ -49,7 +48,7 @@ impl Into<Art> for QueriedArt {
             id: ArtId(self.id),
             artist_id: ArtistId(self.artist_id),
             title: self.title,
-            image_id: ImageId(self.image_id),
+            image_name: self.image_name,
         }
     }
 }
@@ -57,7 +56,7 @@ impl Into<Art> for QueriedArt {
 fn find_by_id(conn: Connection, id: Uuid) -> anyhow::Result<Option<Art>> {
     Ok(arts::table
         .filter(arts::id.eq(id))
-        .select((arts::id, arts::artist_id, arts::title, arts::image_id))
+        .select((arts::id, arts::artist_id, arts::title, arts::image_name))
         .first::<QueriedArt>(&conn)
         .optional()?
         .map(QueriedArt::into))
@@ -74,7 +73,7 @@ struct NewArt<'a> {
     id: &'a Uuid,
     artist_id: &'a Uuid,
     title: &'a str,
-    image_id: &'a Uuid,
+    image_name: &'a str,
 }
 
 impl<'a> From<&'a Art> for NewArt<'a> {
@@ -83,7 +82,7 @@ impl<'a> From<&'a Art> for NewArt<'a> {
             id: &art.id.0,
             artist_id: &art.artist_id.0,
             title: art.title.as_str(),
-            image_id: &art.image_id.0,
+            image_name: art.image_name.as_str(),
         }
     }
 }

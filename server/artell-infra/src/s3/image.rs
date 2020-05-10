@@ -17,10 +17,10 @@ impl S3ImageRepository {
 
 #[async_trait]
 impl ImageRepository for S3ImageRepository {
-    fn url_to(&self, image: &Image) -> String {
+    fn url_to(&self, image_name: &str) -> String {
         format!(
             "https://artell.s3-ap-northeast-1.amazonaws.com/{}",
-            image.name()
+            image_name
         )
     }
 
@@ -28,7 +28,7 @@ impl ImageRepository for S3ImageRepository {
         self.client
             .put_object(PutObjectRequest {
                 bucket: self.bucket.clone(),
-                key: image.name(),
+                key: image.name,
                 body: Some(ByteStream::new(stream::once(future::ok(image.data)))),
                 ..Default::default()
             })
