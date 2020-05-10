@@ -7,9 +7,6 @@ pub struct Image {
     pub data: Bytes,
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-pub struct ImageId(pub Uuid);
-
 #[derive(Error, Debug)]
 pub enum Error {
     #[error("format {0:?} is not supported")]

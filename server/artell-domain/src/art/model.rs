@@ -1,4 +1,4 @@
-use crate::{artist::ArtistId, image::ImageId};
+use crate::artist::ArtistId;
 use thiserror::Error;
 use uuid::Uuid;
 
@@ -7,7 +7,7 @@ pub struct Art {
     pub id: ArtId,
     pub artist_id: ArtistId,
     pub title: String,
-    pub image_id: ImageId,
+    pub image_name: String,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -31,7 +31,7 @@ impl Art {
     //
     // ArtistIdが存在している => Artistが存在している
     // が成り立つようにする
-    pub fn new(artist_id: ArtistId, title: String, image_id: ImageId) -> Result<Self, Error> {
+    pub fn new(artist_id: ArtistId, title: String, image_name: String) -> Result<Self, Error> {
         if title.is_empty() {
             return Err(Error::InvalidArgument("title"));
         }
@@ -40,7 +40,7 @@ impl Art {
             id: ArtId(Uuid::new_v4()),
             artist_id,
             title,
-            image_id,
+            image_name,
         })
     }
 }
