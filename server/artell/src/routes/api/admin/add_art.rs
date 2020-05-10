@@ -1,7 +1,7 @@
 use crate::res::{handler_fn, response, Error, Response};
 use artell_infra::{
-    fs::FsImageRepository,
     pg::{GlobalPostgres, PgArtRepository, PgArtistRepository},
+    s3::S3ImageRepository,
 };
 use artell_usecase::command::admin_add_art as usecase;
 use bytes::Bytes;
@@ -30,7 +30,7 @@ async fn handler(body: ReqBody) -> Result<Response, Error> {
 
     let artist_repo = PgArtistRepository::new(GlobalPostgres::get());
     let art_repo = PgArtRepository::new(GlobalPostgres::get());
-    let image_repo = FsImageRepository::new("ToDo".into());
+    let image_repo = S3ImageRepository::new("artell".to_string());
 
     let params = usecase::Params {
         artist_id: body.artist_id,
