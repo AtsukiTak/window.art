@@ -8,7 +8,7 @@ pub mod routes;
 pub mod server;
 
 pub use config::Config;
-pub use res::{handler_fn, response, Error, Response};
+pub use res::*;
 
 use artell_infra::pg::Postgres;
 

@@ -1,7 +1,6 @@
-use crate::{handler_fn, response, Config, Error, Response};
+use crate::{handler_fn, response_ok, Config, Error, Response};
 use artell_usecase::admin::add_art as usecase;
 use bytes::Bytes;
-use http::StatusCode;
 use uuid::Uuid;
 use warp::{reject::Rejection, Filter};
 
@@ -39,16 +38,12 @@ async fn handler(config: Config, body: ReqBody) -> Result<Response, Error> {
     )
     .await
     .map_err(|e| match e {
-        usecase::Error::ArtistNotFound => Error::new(StatusCode::BAD_REQUEST, "artist not found"),
-        usecase::Error::ImageDomainViolation(_) => {
-            Error::new(StatusCode::BAD_REQUEST, "invalid argument")
-        }
-        usecase::Error::ArtDomainViolation(_) => {
-            Error::new(StatusCode::BAD_REQUEST, "invalid argument")
-        }
-        usecase::Error::Others(_) => Error::new(StatusCode::INTERNAL_SERVER_ERROR, "server error"),
+        usecase::Error::ArtistNotFound => Error::bad_request("artist not found"),
+        usecase::Error::ImageDomainViolation(_) => Error::bad_request("invalid argument"),
+        usecase::Error::ArtDomainViolation(_) => Error::bad_request("invalid argument"),
+        usecase::Error::Others(e) => Error::from(e),
     })
-    .map(|artist_id| response(StatusCode::OK, &artist_id))
+    .map(|artist_id| response_ok(&artist_id))
 }
 
 fn decode_base64(s: &str) -> Result<Bytes, Error> {
@@ -56,6 +51,6 @@ fn decode_base64(s: &str) -> Result<Bytes, Error> {
         .map(|bytes| Bytes::from(bytes))
         .map_err(|e| {
             log::warn!("base64 decode error. {:?}", e);
-            Error::new(StatusCode::BAD_REQUEST, "failed to decode base64 data")
+            Error::bad_request("failed to decode base64 data")
         })
 }

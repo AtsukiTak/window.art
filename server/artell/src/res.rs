@@ -25,7 +25,14 @@ where
  */
 pub type Response = reply::WithStatus<reply::Json>;
 
-pub fn response<T>(status: http::StatusCode, json: &T) -> Response
+pub fn response_ok<T>(json: &T) -> Response
+where
+    T: serde::Serialize,
+{
+    response(StatusCode::OK, json)
+}
+
+pub fn response<T>(status: StatusCode, json: &T) -> Response
 where
     T: serde::Serialize,
 {
@@ -46,6 +53,18 @@ pub struct Error {
 impl Error {
     pub fn new(status: StatusCode, msg: &'static str) -> Self {
         Error { status, msg }
+    }
+
+    pub fn not_found(msg: &'static str) -> Self {
+        Error::new(StatusCode::NOT_FOUND, msg)
+    }
+
+    pub fn bad_request(msg: &'static str) -> Self {
+        Error::new(StatusCode::BAD_REQUEST, msg)
+    }
+
+    pub fn internal_server_error(msg: &'static str) -> Self {
+        Error::new(StatusCode::INTERNAL_SERVER_ERROR, msg)
     }
 
     pub async fn recover(reject: Rejection) -> Result<(Response,), Rejection> {

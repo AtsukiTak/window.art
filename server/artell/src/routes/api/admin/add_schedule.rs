@@ -1,7 +1,6 @@
-use crate::{handler_fn, response, Config, Error, Response};
+use crate::{handler_fn, response_ok, Config, Error, Response};
 use artell_usecase::admin::add_schedule as usecase;
 use chrono::{DateTime, Utc};
-use http::StatusCode;
 use uuid::Uuid;
 use warp::{reject::Rejection, Filter};
 
@@ -30,15 +29,12 @@ async fn handler(config: Config, body: ReqBody) -> Result<Response, Error> {
     usecase::admin_add_schedule(params, config.art_repo(), config.scheduler_repo())
         .await
         .map_err(|e| match e {
-            usecase::Error::ArtNotFound(_) => Error::new(StatusCode::BAD_REQUEST, "art not found"),
-            usecase::Error::SchedulerNotInitialized => Error::new(
-                StatusCode::INTERNAL_SERVER_ERROR,
-                "scheduler is not initialized",
-            ),
-            usecase::Error::Others(_) => {
-                Error::new(StatusCode::INTERNAL_SERVER_ERROR, "server error")
+            usecase::Error::ArtNotFound(_) => Error::bad_request("art not found"),
+            usecase::Error::SchedulerNotInitialized => {
+                Error::internal_server_error("scheduler is not initialized")
             }
+            usecase::Error::Others(_) => Error::internal_server_error("server error"),
         })?;
 
-    Ok(response(StatusCode::OK, &()))
+    Ok(response_ok(&()))
 }

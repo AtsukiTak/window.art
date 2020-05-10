@@ -1,6 +1,5 @@
-use crate::{handler_fn, response, Config, Error, Response};
+use crate::{handler_fn, response_ok, Config, Error, Response};
 use artell_usecase::admin::add_artist::{admin_add_artist, Error as AppError, Params};
-use http::StatusCode;
 use warp::{reject::Rejection, Filter};
 
 #[derive(Deserialize)]
@@ -35,10 +34,8 @@ async fn handler(config: Config, body: ReqBody) -> Result<Response, Error> {
     admin_add_artist(params, config.artist_repo())
         .await
         .map_err(|e| match e {
-            AppError::ArtistDomainInvarianceViolation(_) => {
-                Error::new(StatusCode::BAD_REQUEST, "invalid argument")
-            }
-            AppError::Others(_) => Error::new(StatusCode::INTERNAL_SERVER_ERROR, "server error"),
+            AppError::ArtistDomainInvarianceViolation(_) => Error::bad_request("invalid argument"),
+            AppError::Others(e) => Error::from(e),
         })
-        .map(|artist_id| response(StatusCode::OK, &artist_id.0))
+        .map(|artist_id| response_ok(&artist_id.0))
 }

@@ -1,6 +1,5 @@
-use crate::{handler_fn, response, Config, Error, Response};
+use crate::{handler_fn, response_ok, Config, Error, Response};
 use artell_usecase::user::get_current_art as usecase;
-use http::StatusCode;
 use uuid::Uuid;
 use warp::{reject::Rejection, Filter};
 
@@ -27,15 +26,12 @@ async fn handler(config: Config) -> Result<Response, Error> {
         config.image_repo(),
     )
     .await?
-    .ok_or_else(|| Error::new(StatusCode::NOT_FOUND, "current art is not found"))?;
+    .ok_or_else(|| Error::not_found("current art is not found"))?;
 
-    Ok(response(
-        StatusCode::OK,
-        &ResBody {
-            art_id: &current_art.art.id.0,
-            art_title: current_art.art.title.as_str(),
-            artist_id: &current_art.art.artist_id.0,
-            image_url: current_art.image_url.as_str(),
-        },
-    ))
+    Ok(response_ok(&ResBody {
+        art_id: &current_art.art.id.0,
+        art_title: current_art.art.title.as_str(),
+        artist_id: &current_art.art.artist_id.0,
+        image_url: current_art.image_url.as_str(),
+    }))
 }
