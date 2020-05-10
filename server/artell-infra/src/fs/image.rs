@@ -1,4 +1,4 @@
-use artell_domain::image::{Image, ImageId, ImageRepository};
+use artell_domain::image::{Image, ImageRepository};
 use std::path::PathBuf;
 
 pub struct FsImageRepository {
@@ -15,12 +15,16 @@ impl FsImageRepository {
 
 #[async_trait]
 impl ImageRepository for FsImageRepository {
-    fn path_to(&self, image_id: &ImageId) -> PathBuf {
-        self.path.with_file_name(format!("{}.png", image_id.0))
+    fn url_to(&self, image: &Image) -> String {
+        self.path
+            .with_file_name(image.name())
+            .into_os_string()
+            .into_string()
+            .unwrap()
     }
 
     async fn save(&self, image: Image) -> anyhow::Result<()> {
-        let path = self.path_to(&image.id);
+        let path = self.url_to(&image);
         std::fs::write(path, image.data)?;
         Ok(())
     }

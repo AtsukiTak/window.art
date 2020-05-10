@@ -5,3 +5,4 @@ extern crate async_trait;
 
 pub mod fs;
 pub mod pg;
+pub mod s3;
