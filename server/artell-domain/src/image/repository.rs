@@ -1,9 +1,8 @@
-use super::{Image, ImageId};
-use std::path::PathBuf;
+use super::Image;
 
 #[async_trait]
 pub trait ImageRepository {
-    fn path_to(&self, image_id: &ImageId) -> PathBuf;
+    fn url_to(&self, image: &Image) -> String;
 
     async fn save(&self, image: Image) -> anyhow::Result<()>;
 }
