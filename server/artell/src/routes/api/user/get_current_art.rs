@@ -1,8 +1,4 @@
-use crate::res::{handler_fn, response, Error, Response};
-use artell_infra::{
-    pg::{GlobalPostgres, PgArtRepository, PgSchedulerRepository},
-    s3::S3ImageRepository,
-};
+use crate::{handler_fn, response, Config, Error, Response};
 use artell_usecase::user::get_current_art as usecase;
 use http::StatusCode;
 use uuid::Uuid;
@@ -16,21 +12,22 @@ pub struct ResBody<'a> {
     image_url: &'a str,
 }
 
-pub fn route() -> impl Filter<Extract = (Response,), Error = Rejection> + Clone {
+pub fn route(config: Config) -> impl Filter<Extract = (Response,), Error = Rejection> + Clone {
     warp::path!("user" / "get_current_art")
         .and(warp::filters::method::get())
-        .and_then(|| handler_fn(handler))
+        .and(config.as_filter())
+        .and_then(|config| handler_fn(move || handler(config)))
         .or_else(Error::recover)
 }
 
-async fn handler() -> Result<Response, Error> {
-    let art_repo = PgArtRepository::new(GlobalPostgres::get());
-    let scheduler_repo = PgSchedulerRepository::new(GlobalPostgres::get());
-    let image_repo = S3ImageRepository::new("artell".to_string());
-
-    let current_art = usecase::get_current_art(scheduler_repo, art_repo, image_repo)
-        .await?
-        .ok_or_else(|| Error::new(StatusCode::NOT_FOUND, "current art is not found"))?;
+async fn handler(config: Config) -> Result<Response, Error> {
+    let current_art = usecase::get_current_art(
+        config.scheduler_repo(),
+        config.art_repo(),
+        config.image_repo(),
+    )
+    .await?
+    .ok_or_else(|| Error::new(StatusCode::NOT_FOUND, "current art is not found"))?;
 
     Ok(response(
         StatusCode::OK,

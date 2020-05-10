@@ -2,11 +2,15 @@ extern crate openssl;
 #[macro_use]
 extern crate serde;
 
+pub mod config;
 pub mod res;
 pub mod routes;
 pub mod server;
 
-use artell_infra::pg::GlobalPostgres;
+pub use config::Config;
+pub use res::{handler_fn, response, Error, Response};
+
+use artell_infra::pg::Postgres;
 
 #[tokio::main]
 async fn main() {
@@ -14,11 +18,11 @@ async fn main() {
     openssl_probe::init_ssl_cert_env_vars();
 
     let db_url = get_env_var_or_panic("DATABASE_URL");
-    GlobalPostgres::initialize(db_url).unwrap();
+    let pg = Postgres::new(db_url);
 
     let port = get_env_var_u16_or_panic("PORT");
 
-    server::bind(([0, 0, 0, 0], port)).await
+    server::bind(Config::new(pg, "artell".to_string()), ([0, 0, 0, 0], port)).await
 }
 
 fn get_env_var_or_panic(key: &'static str) -> String {

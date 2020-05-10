@@ -1,4 +1,4 @@
-use crate::routes;
+use crate::{routes, Config};
 use artell_infra::pg::{GlobalPostgres, PgSchedulerRepository};
 use artell_usecase::system::check_scheduler::system_update_scheduler;
 use chrono::{Timelike, Utc};
@@ -7,8 +7,8 @@ use std::net::SocketAddr;
 use tokio::time::{interval_at, Duration, Instant, Interval};
 use warp::Filter;
 
-pub async fn bind(socket: impl Into<SocketAddr> + 'static) {
-    let filter = routes::api::route().with(warp::filters::log::log("crop"));
+pub async fn bind(config: Config, socket: impl Into<SocketAddr> + 'static) {
+    let filter = routes::api::route(config).with(warp::filters::log::log("crop"));
 
     let server = warp::serve(filter);
     let server_fut = server.bind(socket);

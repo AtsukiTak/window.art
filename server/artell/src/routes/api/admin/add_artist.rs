@@ -1,5 +1,4 @@
-use crate::res::{handler_fn, response, Error, Response};
-use artell_infra::pg::{GlobalPostgres, PgArtistRepository};
+use crate::{handler_fn, response, Config, Error, Response};
 use artell_usecase::admin::add_artist::{admin_add_artist, Error as AppError, Params};
 use http::StatusCode;
 use warp::{reject::Rejection, Filter};
@@ -14,17 +13,16 @@ pub struct ReqBody {
     twitter: String,
 }
 
-pub fn route() -> impl Filter<Extract = (Response,), Error = Rejection> + Clone {
+pub fn route(config: Config) -> impl Filter<Extract = (Response,), Error = Rejection> + Clone {
     warp::path!("admin" / "add_artist")
         .and(warp::filters::method::post())
         .and(warp::filters::body::json::<ReqBody>())
-        .and_then(|body| handler_fn(move || handler(body)))
+        .and(config.as_filter())
+        .and_then(|body, config| handler_fn(move || handler(config, body)))
         .or_else(Error::recover)
 }
 
-async fn handler(body: ReqBody) -> Result<Response, Error> {
-    let artist_repo = PgArtistRepository::new(GlobalPostgres::get());
-
+async fn handler(config: Config, body: ReqBody) -> Result<Response, Error> {
     let params = Params {
         name: body.name,
         email: body.email,
@@ -34,7 +32,7 @@ async fn handler(body: ReqBody) -> Result<Response, Error> {
         twitter: body.twitter,
     };
 
-    admin_add_artist(params, artist_repo)
+    admin_add_artist(params, config.artist_repo())
         .await
         .map_err(|e| match e {
             AppError::ArtistDomainInvarianceViolation(_) => {

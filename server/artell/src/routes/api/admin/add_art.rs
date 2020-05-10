@@ -1,8 +1,4 @@
-use crate::res::{handler_fn, response, Error, Response};
-use artell_infra::{
-    pg::{GlobalPostgres, PgArtRepository, PgArtistRepository},
-    s3::S3ImageRepository,
-};
+use crate::{handler_fn, response, Config, Error, Response};
 use artell_usecase::admin::add_art as usecase;
 use bytes::Bytes;
 use http::StatusCode;
@@ -17,20 +13,17 @@ pub struct ReqBody {
     image_data: String,
 }
 
-pub fn route() -> impl Filter<Extract = (Response,), Error = Rejection> + Clone {
+pub fn route(config: Config) -> impl Filter<Extract = (Response,), Error = Rejection> + Clone {
     warp::path!("admin" / "add_art")
         .and(warp::filters::method::post())
         .and(warp::filters::body::json::<ReqBody>())
-        .and_then(|body| handler_fn(move || handler(body)))
+        .and(config.as_filter())
+        .and_then(|body, config| handler_fn(move || handler(config, body)))
         .or_else(Error::recover)
 }
 
-async fn handler(body: ReqBody) -> Result<Response, Error> {
+async fn handler(config: Config, body: ReqBody) -> Result<Response, Error> {
     let image_bytes = decode_base64(body.image_data.as_str())?;
-
-    let artist_repo = PgArtistRepository::new(GlobalPostgres::get());
-    let art_repo = PgArtRepository::new(GlobalPostgres::get());
-    let image_repo = S3ImageRepository::new("artell".to_string());
 
     let params = usecase::Params {
         artist_id: body.artist_id,
@@ -38,23 +31,24 @@ async fn handler(body: ReqBody) -> Result<Response, Error> {
         image_data: image_bytes,
     };
 
-    usecase::admin_add_art(params, artist_repo, art_repo, image_repo)
-        .await
-        .map_err(|e| match e {
-            usecase::Error::ArtistNotFound => {
-                Error::new(StatusCode::BAD_REQUEST, "artist not found")
-            }
-            usecase::Error::ImageDomainViolation(_) => {
-                Error::new(StatusCode::BAD_REQUEST, "invalid argument")
-            }
-            usecase::Error::ArtDomainViolation(_) => {
-                Error::new(StatusCode::BAD_REQUEST, "invalid argument")
-            }
-            usecase::Error::Others(_) => {
-                Error::new(StatusCode::INTERNAL_SERVER_ERROR, "server error")
-            }
-        })
-        .map(|artist_id| response(StatusCode::OK, &artist_id))
+    usecase::admin_add_art(
+        params,
+        config.artist_repo(),
+        config.art_repo(),
+        config.image_repo(),
+    )
+    .await
+    .map_err(|e| match e {
+        usecase::Error::ArtistNotFound => Error::new(StatusCode::BAD_REQUEST, "artist not found"),
+        usecase::Error::ImageDomainViolation(_) => {
+            Error::new(StatusCode::BAD_REQUEST, "invalid argument")
+        }
+        usecase::Error::ArtDomainViolation(_) => {
+            Error::new(StatusCode::BAD_REQUEST, "invalid argument")
+        }
+        usecase::Error::Others(_) => Error::new(StatusCode::INTERNAL_SERVER_ERROR, "server error"),
+    })
+    .map(|artist_id| response(StatusCode::OK, &artist_id))
 }
 
 fn decode_base64(s: &str) -> Result<Bytes, Error> {
