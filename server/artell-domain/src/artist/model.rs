@@ -1,3 +1,5 @@
+use crate::access_token::AccessToken;
+use chrono::Duration;
 use uuid::Uuid;
 
 #[derive(Clone, PartialEq, Eq, Debug, Serialize, Deserialize)]
@@ -19,6 +21,27 @@ pub enum Error {
     EmptyEmail,
 }
 
+/*
+ * ===========
+ * Query
+ * ===========
+ */
+impl Artist {
+    pub fn publish_access_token(&self) -> AccessToken<ArtistClaim> {
+        AccessToken::with_exp(ArtistClaim { artist_id: self.id }, Duration::days(7))
+    }
+}
+
+#[derive(Clone, Copy, Debug, Serialize, Deserialize)]
+pub struct ArtistClaim {
+    pub artist_id: ArtistId,
+}
+
+/*
+ * ============
+ * Command
+ * ============
+ */
 impl Artist {
     pub fn new(
         name: String,
@@ -37,7 +60,7 @@ impl Artist {
         }
 
         Ok(Artist {
-            id: ArtistId::new(),
+            id: ArtistId(Uuid::new_v4()),
             name,
             email,
             status_msg,
@@ -69,12 +92,6 @@ impl Artist {
 #[derive(Clone, Copy, PartialEq, Eq, Debug, Serialize, Deserialize)]
 #[serde(transparent)]
 pub struct ArtistId(pub Uuid);
-
-impl ArtistId {
-    fn new() -> Self {
-        ArtistId(Uuid::new_v4())
-    }
-}
 
 impl AsRef<Uuid> for ArtistId {
     fn as_ref(&self) -> &Uuid {
