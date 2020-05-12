@@ -1,4 +1,4 @@
-use artell_domain::image::{Image, ImageRepository};
+use artell_domain::image::{Format, Image, ImageRepository};
 use futures::{future, stream};
 use rusoto_core::{region::Region, ByteStream};
 use rusoto_s3::{PutObjectRequest, S3Client, S3};
@@ -26,11 +26,18 @@ impl ImageRepository for S3ImageRepository {
 
     async fn save(&self, image: Image) -> anyhow::Result<()> {
         log::debug!("start putting a new object to s3...");
+
+        let content_type = match image.format() {
+            Format::Png => "image/png",
+            Format::Jpeg => "image/jpeg",
+        };
+
         self.client
             .put_object(PutObjectRequest {
                 bucket: self.bucket.clone(),
                 key: image.name,
                 body: Some(ByteStream::new(stream::once(future::ok(image.data)))),
+                content_type: Some(content_type.to_string()),
                 ..Default::default()
             })
             .await?;
