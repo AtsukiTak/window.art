@@ -7,12 +7,33 @@ pub struct Image {
     pub data: Bytes,
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum Format {
+    Png,
+    Jpeg,
+}
+
 #[derive(Error, Debug)]
 pub enum Error {
     #[error("format {0:?} is not supported")]
     UnsupportedFormat(image::ImageFormat),
     #[error("image error")]
     ImageError(#[from] image::error::ImageError),
+}
+
+/*
+ * ======
+ * Query
+ * ======
+ */
+impl Image {
+    pub fn format(&self) -> Format {
+        match self.name.rsplit(".").next() {
+            Some("png") => Format::Png,
+            Some("jpeg") => Format::Jpeg,
+            _ => unreachable!(),
+        }
+    }
 }
 
 /*
