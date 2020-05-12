@@ -7,5 +7,5 @@ mod schema;
 
 pub use art::PgArtRepository;
 pub use artist::PgArtistRepository;
-pub use postgres::{Connection, GlobalPostgres, Postgres};
+pub use postgres::{Connection, Postgres};
 pub use scheduler::PgSchedulerRepository;

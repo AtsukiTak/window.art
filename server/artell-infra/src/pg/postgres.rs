@@ -1,30 +1,7 @@
-use lazycell::AtomicLazyCell;
-
 use diesel::{
     pg::PgConnection,
     r2d2::{ConnectionManager, Pool as PgPool, PooledConnection},
 };
-
-static GLOBAL_PG: GlobalPostgres = GlobalPostgres {
-    inner: AtomicLazyCell::NONE,
-};
-
-pub struct GlobalPostgres {
-    inner: AtomicLazyCell<Postgres>,
-}
-
-impl GlobalPostgres {
-    pub fn initialize(url: impl Into<String>) -> anyhow::Result<()> {
-        GLOBAL_PG
-            .inner
-            .fill(Postgres::new(url))
-            .map_err(|_| anyhow::anyhow!("GlobalPostgres is already initialized"))
-    }
-
-    pub fn get() -> Postgres {
-        GLOBAL_PG.inner.borrow().unwrap().clone()
-    }
-}
 
 /*
  * =========
