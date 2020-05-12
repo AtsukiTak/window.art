@@ -25,6 +25,7 @@ impl ImageRepository for S3ImageRepository {
     }
 
     async fn save(&self, image: Image) -> anyhow::Result<()> {
+        log::debug!("start putting a new object to s3...");
         self.client
             .put_object(PutObjectRequest {
                 bucket: self.bucket.clone(),
@@ -33,6 +34,7 @@ impl ImageRepository for S3ImageRepository {
                 ..Default::default()
             })
             .await?;
+        log::debug!("completed to put a new object to s3");
         Ok(())
     }
 }
