@@ -5,6 +5,7 @@ use uuid::Uuid;
 use warp::{reject::Rejection, Filter};
 
 #[derive(Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct ReqBody {
     artist_id: Uuid,
     title: String,

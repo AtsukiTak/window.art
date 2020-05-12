@@ -3,6 +3,7 @@ use artell_usecase::admin::add_artist::{admin_add_artist, Error as AppError, Par
 use warp::{reject::Rejection, Filter};
 
 #[derive(Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct ReqBody {
     name: String,
     email: String,

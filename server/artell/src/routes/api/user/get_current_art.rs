@@ -4,6 +4,7 @@ use uuid::Uuid;
 use warp::{reject::Rejection, Filter};
 
 #[derive(Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct ResBody<'a> {
     art_id: &'a Uuid,
     art_title: &'a str,
