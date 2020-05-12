@@ -1,5 +1,4 @@
 use artell_domain::image::{Format, Image, ImageRepository};
-use futures::{future, stream};
 use rusoto_core::{region::Region, ByteStream};
 use rusoto_s3::{PutObjectRequest, S3Client, S3};
 
@@ -36,8 +35,13 @@ impl ImageRepository for S3ImageRepository {
             .put_object(PutObjectRequest {
                 bucket: self.bucket.clone(),
                 key: image.name,
-                body: Some(ByteStream::new(stream::once(future::ok(image.data)))),
+                // rusoto_s3 のバグで、素直にByteStream::newを呼び出した場合
+                // put objectリクエストが失敗する。
+                // https://github.com/rusoto/rusoto/issues/1752
+                body: Some(ByteStream::from(image.data.as_ref().to_vec())),
                 content_type: Some(content_type.to_string()),
+                // 誰でも見れるようにする。
+                grant_read: Some("uri=http://acs.amazonaws.com/groups/global/AllUsers".to_string()),
                 ..Default::default()
             })
             .await?;
