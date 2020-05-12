@@ -35,6 +35,11 @@ macro_rules! boxed_on_debug {
 pub fn route(config: Config) -> impl Filter<Extract = (impl Reply,), Error = Rejection> + Clone {
     let mount = path::path("api").and(path::path("v1"));
 
+    let cors = warp::filters::cors::cors()
+        .allow_any_origin()
+        .allow_methods(vec!["POST", "OPTIONS"])
+        .allow_headers(vec!["Content-Type"]);
+
     let routes = combine!(
         user::get_current_art::route(config.clone()),
         admin::add_art::route(config.clone()),
@@ -42,5 +47,5 @@ pub fn route(config: Config) -> impl Filter<Extract = (impl Reply,), Error = Rej
         admin::add_artist::route(config.clone())
     );
 
-    mount.and(routes)
+    mount.and(routes).with(cors)
 }
