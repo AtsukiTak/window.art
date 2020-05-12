@@ -91,6 +91,7 @@ dependencies = [
  "anyhow",
  "artell-domain",
  "async-trait",
+ "bytes",
  "chrono",
  "diesel",
  "futures",

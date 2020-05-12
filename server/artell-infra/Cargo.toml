@@ -20,3 +20,6 @@ rusoto_core = "0.43"
 rusoto_s3 = "0.43"
 tokio = { version = "0.2", features = ["macros", "rt-threaded", "blocking"] }
 uuid = "0.8"
+
+[dev-dependencies]
+bytes = "0.5"
