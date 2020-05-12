@@ -24,6 +24,7 @@ impl Image {
     pub fn new(data: Bytes) -> Result<Self, Error> {
         let format_str = match image::guess_format(&data)? {
             image::ImageFormat::Png => "png",
+            image::ImageFormat::Jpeg => "jpeg",
             f => return Err(Error::UnsupportedFormat(f)),
         };
 
