@@ -15,6 +15,7 @@ chrono = { version = "0.4" }
 diesel = { version = "1.4", features = ["postgres", "r2d2", "chrono", "uuid", "uuidv07"] }
 futures = "0.3"
 lazycell = "1.2"
+log = "0.4"
 rusoto_core = "0.43"
 rusoto_s3 = "0.43"
 tokio = { version = "0.2", features = ["macros", "rt-threaded", "blocking"] }

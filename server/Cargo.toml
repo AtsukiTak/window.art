@@ -3,5 +3,6 @@ members = [
   "artell",
   "artell-usecase",
   "artell-infra",
-  "artell-domain"
+  "artell-domain",
+  "artell-cli"
 ]
