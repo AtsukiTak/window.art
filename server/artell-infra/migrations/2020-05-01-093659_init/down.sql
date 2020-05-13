@@ -1,1 +1,3 @@
--- This file should undo anything in `up.sql`
+DROP TABLE schedules;
+DROP TABLE arts;
+DROP TABLE artists;
