@@ -10,6 +10,7 @@ pub struct Params {
     pub artist_id: Uuid,
     pub title: String,
     pub image_data: Bytes,
+    pub portfolio_id: String,
 }
 
 #[derive(Error, Debug)]
@@ -42,7 +43,7 @@ pub async fn admin_add_art(
     image_repo.save(image).await?;
 
     // artを作成、保存
-    let art = Art::new(artist.id, params.title, image_name)?;
+    let art = Art::new(artist.id, params.title, image_name, params.portfolio_id)?;
     let art_id = art.id;
     art_repo.save(art).await?;
 
