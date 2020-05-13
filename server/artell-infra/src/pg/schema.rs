@@ -16,6 +16,7 @@ table! {
         artist_id -> Uuid,
         title -> Text,
         image_name -> Text,
+        portfolio_id -> Text,
     }
 }
 

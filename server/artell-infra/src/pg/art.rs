@@ -40,6 +40,7 @@ struct QueriedArt {
     artist_id: Uuid,
     title: String,
     image_name: String,
+    portfolio_id: String,
 }
 
 impl Into<Art> for QueriedArt {
@@ -49,6 +50,7 @@ impl Into<Art> for QueriedArt {
             artist_id: ArtistId(self.artist_id),
             title: self.title,
             image_name: self.image_name,
+            portfolio_id: self.portfolio_id,
         }
     }
 }
@@ -56,7 +58,13 @@ impl Into<Art> for QueriedArt {
 fn find_by_id(conn: Connection, id: Uuid) -> anyhow::Result<Option<Art>> {
     Ok(arts::table
         .filter(arts::id.eq(id))
-        .select((arts::id, arts::artist_id, arts::title, arts::image_name))
+        .select((
+            arts::id,
+            arts::artist_id,
+            arts::title,
+            arts::image_name,
+            arts::portfolio_id,
+        ))
         .first::<QueriedArt>(&conn)
         .optional()?
         .map(QueriedArt::into))
@@ -74,6 +82,7 @@ struct NewArt<'a> {
     artist_id: &'a Uuid,
     title: &'a str,
     image_name: &'a str,
+    portfolio_id: &'a str,
 }
 
 impl<'a> From<&'a Art> for NewArt<'a> {
@@ -83,6 +92,7 @@ impl<'a> From<&'a Art> for NewArt<'a> {
             artist_id: &art.artist_id.0,
             title: art.title.as_str(),
             image_name: art.image_name.as_str(),
+            portfolio_id: art.portfolio_id.as_str(),
         }
     }
 }
