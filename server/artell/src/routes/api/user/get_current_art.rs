@@ -8,7 +8,7 @@ use warp::{reject::Rejection, Filter};
 pub struct ResBody<'a> {
     art_id: &'a Uuid,
     art_title: &'a str,
-    artist_id: &'a Uuid,
+    artist_name: &'a str,
     image_url: &'a str,
     portfolio_id: &'a str,
 }
@@ -25,6 +25,7 @@ async fn handler(config: Config) -> Result<Response, Error> {
     let current_art = usecase::get_current_art(
         config.scheduler_repo(),
         config.art_repo(),
+        config.artist_repo(),
         config.image_repo(),
     )
     .await?
@@ -33,7 +34,7 @@ async fn handler(config: Config) -> Result<Response, Error> {
     Ok(response_ok(&ResBody {
         art_id: &current_art.art.id.0,
         art_title: current_art.art.title.as_str(),
-        artist_id: &current_art.art.artist_id.0,
+        artist_name: &current_art.artist.name.as_str(),
         image_url: current_art.image_url.as_str(),
         portfolio_id: current_art.art.portfolio_id.as_str(),
     }))
