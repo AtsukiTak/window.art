@@ -6,6 +6,7 @@ use uuid::Uuid;
 #[derive(Debug, StructOpt)]
 #[structopt(name = "admin-cli")]
 enum Command {
+    AddArtist(AddArtistCommand),
     AddArt(AddArtCommand),
     AddSchedule(AddScheduleCommand),
 }
@@ -14,9 +15,58 @@ enum Command {
 async fn main() {
     let command = Command::from_args();
     match command {
+        Command::AddArtist(cmd) => add_artist(cmd).await,
         Command::AddArt(cmd) => add_art(cmd).await,
         Command::AddSchedule(cmd) => add_schedule(cmd).await,
     };
+}
+
+/*
+ * ===========
+ * AddArtist
+ * ===========
+ */
+#[derive(Debug, StructOpt)]
+struct AddArtistCommand {
+    server_url: String,
+    name: String,
+    email: String,
+    status_msg: String,
+    description: String,
+    instagram: String,
+    twitter: String,
+}
+
+async fn add_artist(cmd: AddArtistCommand) {
+    #[derive(Serialize)]
+    #[serde(rename_all = "camelCase")]
+    struct ReqBody {
+        name: String,
+        email: String,
+        status_msg: String,
+        description: String,
+        instagram: String,
+        twitter: String,
+    }
+
+    let body = ReqBody {
+        name: cmd.name,
+        email: cmd.email,
+        status_msg: cmd.status_msg,
+        description: cmd.description,
+        instagram: cmd.instagram,
+        twitter: cmd.twitter,
+    };
+
+    let res = reqwest::Client::new()
+        .post(&format!("{}/api/v1/admin/add_artist", cmd.server_url))
+        .json(&body)
+        .send()
+        .await
+        .unwrap();
+    println!("{:?}", res);
+    let txt = res.text().await.unwrap();
+    println!("{:?}", txt);
 }
 
 /*
@@ -30,6 +80,7 @@ struct AddArtCommand {
     artist_id: Uuid,
     title: String,
     image_path: String,
+    portfolio_id: String,
 }
 
 async fn add_art(cmd: AddArtCommand) {
@@ -42,12 +93,14 @@ async fn add_art(cmd: AddArtCommand) {
         artist_id: Uuid,
         title: String,
         image_data: String,
+        portfolio_id: String,
     }
 
     let body = ReqBody {
         artist_id: cmd.artist_id,
         title: cmd.title,
         image_data: encoded_img_data,
+        portfolio_id: cmd.portfolio_id,
     };
 
     let res = reqwest::Client::new()
@@ -57,7 +110,7 @@ async fn add_art(cmd: AddArtCommand) {
         .await
         .unwrap();
     println!("{:?}", res);
-    let txt = res.text().await;
+    let txt = res.text().await.unwrap();
     println!("{:?}", txt);
 }
 
@@ -93,6 +146,6 @@ async fn add_schedule(cmd: AddScheduleCommand) {
         .await
         .unwrap();
     println!("{:?}", res);
-    let txt = res.text().await;
+    let txt = res.text().await.unwrap();
     println!("{:?}", txt);
 }
