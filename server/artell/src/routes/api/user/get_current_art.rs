@@ -10,6 +10,7 @@ pub struct ResBody<'a> {
     art_title: &'a str,
     artist_id: &'a Uuid,
     image_url: &'a str,
+    portfolio_id: &'a str,
 }
 
 pub fn route(config: Config) -> impl Filter<Extract = (Response,), Error = Rejection> + Clone {
@@ -34,5 +35,6 @@ async fn handler(config: Config) -> Result<Response, Error> {
         art_title: current_art.art.title.as_str(),
         artist_id: &current_art.art.artist_id.0,
         image_url: current_art.image_url.as_str(),
+        portfolio_id: current_art.art.portfolio_id.as_str(),
     }))
 }
