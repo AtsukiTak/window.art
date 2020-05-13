@@ -11,6 +11,9 @@ body {
 img {
   height: 100%;
   display: inline-block;
+}
+
+img.show {
   animation: fadeIn 5s ease 0s 1 normal;
   -webkit-animation: fadeIn 5s ease 0s 1 normal;
 }
