@@ -3,8 +3,8 @@ body {
 }
 
 .img-wrapper {
-  height: 96vh;
-  margin: 2vh auto;
+  height: 92vh;
+  margin: 4vh auto;
   text-align: center;
 }
 
@@ -14,8 +14,8 @@ img {
 }
 
 img.show {
-  animation: fadeIn 5s ease 0s 1 normal;
-  -webkit-animation: fadeIn 5s ease 0s 1 normal;
+  animation: fadeIn 2s ease 0s 1 normal;
+  -webkit-animation: fadeIn 2s ease 0s 1 normal;
 }
 
 @keyframes fadeIn { 
@@ -24,49 +24,37 @@ img.show {
 }
 
 #caption {
-  opacity: 0;
   position: absolute;
-  height: 80px;
-  bottom: 2vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 4vh;
+  opacity: 0;
+  bottom: 0;
   left: 50%;
   -ms-transform: translate(-50%,0);
   -webkit-transform: translate(-50%,0);
   transform: translate(-50%,0);
-  background-image: linear-gradient(to bottom, rgba(98, 98, 98, 0.65) 13%, #363636, #333333);
-  color: white;
+  color: #444444;
 }
 
-img:hover + #caption {
-  transition-duration:2s;
-  opacity: 0.7;
-}
-
-#caption:hover {
-  transition-duration:2s;
-  opacity: 0.7;
+.img-wrapper:hover + #caption {
+  transition-duration: 1s;
+  opacity: 0.9;
 }
 
 .title {
-  margin:18px 0 4px 24px;
-  font-size: 16px;
+  margin: 8px;
+  font-size: 12px;
   font-weight: 500;
   letter-spacing: 2.4px;
-  text-align: left;
+  text-align: center;
 }
 
 .artist {
-  margin: 0 0 0 24px;
+  margin: 8px;
   font-size: 10px;
   font-weight: 500;
   letter-spacing: 1.83px;
-  text-align: left;
-}
-
-.service {
-  margin: 0 8px 0 0;
-  font-size: 10px;
-  font-weight: 500;
-  letter-spacing: 0.67px;
-  color: #cacaca;
-  text-align: right;
+  text-align: center;
 }
