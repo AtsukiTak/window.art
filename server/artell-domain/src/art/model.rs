@@ -8,6 +8,7 @@ pub struct Art {
     pub artist_id: ArtistId,
     pub title: String,
     pub image_name: String,
+    pub portfolio_id: String,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -21,8 +22,10 @@ impl std::fmt::Display for ArtId {
 
 #[derive(Error, Debug)]
 pub enum Error {
-    #[error("invalid argument `{0}`")]
-    InvalidArgument(&'static str),
+    #[error("title must not be empty")]
+    EmptyTitle,
+    #[error("portfolio_id must not be empty")]
+    EmptyPortfolioId,
 }
 
 impl Art {
@@ -31,9 +34,18 @@ impl Art {
     //
     // ArtistIdが存在している => Artistが存在している
     // が成り立つようにする
-    pub fn new(artist_id: ArtistId, title: String, image_name: String) -> Result<Self, Error> {
+    pub fn new(
+        artist_id: ArtistId,
+        title: String,
+        image_name: String,
+        portfolio_id: String,
+    ) -> Result<Self, Error> {
         if title.is_empty() {
-            return Err(Error::InvalidArgument("title"));
+            return Err(Error::EmptyTitle);
+        }
+
+        if portfolio_id.is_empty() {
+            return Err(Error::EmptyPortfolioId);
         }
 
         Ok(Art {
@@ -41,6 +53,7 @@ impl Art {
             artist_id,
             title,
             image_name,
+            portfolio_id,
         })
     }
 }
