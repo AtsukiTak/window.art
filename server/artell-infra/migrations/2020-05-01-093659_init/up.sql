@@ -25,7 +25,6 @@ CREATE TABLE schedules (
   activate_at   TIMESTAMPTZ NOT NULL,
   is_scheduled  BOOLEAN NOT NULL DEFAULT TRUE,
 
-  UNIQUE (art_id, activate_at),
   CONSTRAINT schedule_art_fkey FOREIGN KEY (art_id)
     REFERENCES arts (id) ON UPDATE RESTRICT ON DELETE RESTRICT
 );
