@@ -57,7 +57,7 @@ fn find(conn: Connection) -> anyhow::Result<Option<Scheduler>> {
         .load::<QueriedSchedule>(&conn)?
         .into_iter()
         .map(QueriedSchedule::into)
-        .collect();
+        .collect::<Vec<Schedule>>();
 
     schedules.sort_unstable_by_key(|s| s.activate_at);
 
