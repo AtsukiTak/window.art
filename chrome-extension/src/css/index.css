@@ -2,15 +2,20 @@ body {
   margin: 0;
 }
 
-.img-wrapper {
-  height: 92vh;
-  margin: 4vh auto;
+.flex-box {
+  display: flex;
+  align-items: flex-end;
+  width: 100vw;
+  height: 100vh;
+}
+
+.img-container {
+  margin: 3vh auto;
   text-align: center;
 }
 
 img {
-  height: 100%;
-  display: inline-block;
+  height: 94vh;
 }
 
 img.show {
@@ -23,37 +28,30 @@ img.show {
   100% {opacity: 1}
 }
 
-#caption {
-  position: absolute;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 4vh;
+#caption-container {
+  width: 30vw;
+  height: 100vh;
   opacity: 0;
-  bottom: 0;
-  left: 50%;
-  -ms-transform: translate(-50%,0);
-  -webkit-transform: translate(-50%,0);
-  transform: translate(-50%,0);
-  color: #444444;
+  text-align: left;
+  padding: 0px;
 }
 
-.img-wrapper:hover + #caption {
+.img-container:hover + #caption-container {
   transition-duration: 1s;
   opacity: 0.9;
 }
 
-#caption:hover {
+#caption-container:hover {
   transition-duration: 1s;
   opacity: 0.9;
 }
 
 .title {
-  margin: 8px;
-  font-size: 12px;
+  margin: 80vh 8px 8px 8px;
+  font-size: 14px;
   font-weight: 500;
   letter-spacing: 2.4px;
-  text-align: center;
+  color: #444444;
 }
 
 .artist {
@@ -61,5 +59,5 @@ img.show {
   font-size: 10px;
   font-weight: 500;
   letter-spacing: 1.83px;
-  text-align: center;
+  color: #a1a1a1;
 }
