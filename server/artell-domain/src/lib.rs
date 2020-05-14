@@ -8,5 +8,6 @@ extern crate thiserror;
 pub mod access_token;
 pub mod art;
 pub mod artist;
+pub mod commons;
 pub mod image;
 pub mod scheduler;

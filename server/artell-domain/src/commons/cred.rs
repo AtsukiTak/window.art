@@ -1,0 +1,31 @@
+const N_ITER: u32 = 1_000;
+
+#[derive(Clone)]
+pub struct Cred {
+    pub cred: String,
+}
+
+impl Cred {
+    pub fn derive(secret: &str) -> Result<Cred, std::io::Error> {
+        let cred = pbkdf2::pbkdf2_simple(secret, N_ITER)?;
+        Ok(Cred { cred })
+    }
+
+    pub fn verify(&self, attempt: &str) -> Result<(), pbkdf2::CheckError> {
+        pbkdf2::pbkdf2_check(attempt, self.cred.as_str())
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn derive_and_verify() {
+        let pass = "hogehoge";
+
+        let cred = Cred::derive(pass);
+        assert!(cred.verify(pass).is_ok());
+        assert!(cred.verify("invalid").is_err());
+    }
+}
