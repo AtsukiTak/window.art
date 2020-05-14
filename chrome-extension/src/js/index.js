@@ -2,6 +2,7 @@ window.onload = function() {
   fetch("https://artell.herokuapp.com/api/v1/user/get_current_art")
     .then(res => res.json())
     .then(json => {
+      this.console.log(json)
       var imgEle = document.getElementById("works");
       var captionEle = document.getElementById("caption");
       var titleEle = document.getElementById("title");
