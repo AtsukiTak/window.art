@@ -51,13 +51,15 @@ impl Into<Schedule> for QueriedSchedule {
 }
 
 fn find(conn: Connection) -> anyhow::Result<Option<Scheduler>> {
-    let schedules = schedules::table
+    let mut schedules = schedules::table
         .filter(schedules::is_scheduled.eq(true))
         .select((schedules::art_id, schedules::activate_at))
         .load::<QueriedSchedule>(&conn)?
         .into_iter()
         .map(QueriedSchedule::into)
         .collect();
+
+    schedules.sort_unstable_by_key(|s| s.activate_at);
 
     Ok(Some(Scheduler { schedules }))
 }
