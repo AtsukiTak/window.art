@@ -1,5 +1,3 @@
-use crate::access_token::AccessToken;
-use chrono::Duration;
 use uuid::Uuid;
 
 #[derive(Clone, PartialEq, Eq, Debug, Serialize, Deserialize)]
@@ -19,17 +17,6 @@ pub enum Error {
     EmptyName,
     #[error("email must not be empty")]
     EmptyEmail,
-}
-
-/*
- * ===========
- * Query
- * ===========
- */
-impl Artist {
-    pub fn publish_access_token(&self) -> AccessToken<ArtistClaim> {
-        AccessToken::with_exp(ArtistClaim { artist_id: self.id }, Duration::days(7))
-    }
 }
 
 #[derive(Clone, Copy, Debug, Serialize, Deserialize)]
