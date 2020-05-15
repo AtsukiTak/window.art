@@ -17,6 +17,9 @@ table! {
         title -> Text,
         image_name -> Text,
         portfolio_id -> Text,
+        materials -> Text,
+        width -> Nullable<Int4>,
+        height -> Nullable<Int4>,
     }
 }
 

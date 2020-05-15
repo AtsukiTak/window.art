@@ -9,6 +9,9 @@ use warp::{reject::Rejection, Filter};
 pub struct ReqBody {
     artist_id: Uuid,
     title: String,
+    materials: String,
+    // (width, height)
+    size: Option<(usize, usize)>,
     // base64 encoded
     image_data: String,
     portfolio_id: String,
@@ -29,6 +32,8 @@ async fn handler(config: Config, body: ReqBody) -> Result<Response, Error> {
     let params = usecase::Params {
         artist_id: body.artist_id,
         title: body.title,
+        materials: body.materials,
+        size: body.size,
         image_data: image_bytes,
         portfolio_id: body.portfolio_id,
     };

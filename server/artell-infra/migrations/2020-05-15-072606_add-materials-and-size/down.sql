@@ -1,0 +1,3 @@
+ALTER TABLE arts DROP COLUMN materials;
+ALTER TABLE arts DROP COLUMN width;
+ALTER TABLE arts DROP COLUMN height;

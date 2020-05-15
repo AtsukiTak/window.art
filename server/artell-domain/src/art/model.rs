@@ -7,8 +7,16 @@ pub struct Art {
     pub id: ArtId,
     pub artist_id: ArtistId,
     pub title: String,
+    pub materials: String,
+    pub size: Option<Size>,
     pub image_name: String,
     pub portfolio_id: String,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct Size {
+    pub width: usize,
+    pub height: usize,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -37,6 +45,8 @@ impl Art {
     pub fn new(
         artist_id: ArtistId,
         title: String,
+        materials: String,
+        size: Option<(usize, usize)>, // (width, height)
         image_name: String,
         portfolio_id: String,
     ) -> Result<Self, Error> {
@@ -48,10 +58,14 @@ impl Art {
             return Err(Error::EmptyPortfolioId);
         }
 
+        let size = size.map(|(width, height)| Size { width, height });
+
         Ok(Art {
             id: ArtId(Uuid::new_v4()),
             artist_id,
             title,
+            materials,
+            size,
             image_name,
             portfolio_id,
         })

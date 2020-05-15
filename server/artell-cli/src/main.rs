@@ -79,12 +79,15 @@ struct AddArtCommand {
     server_url: String,
     artist_id: Uuid,
     title: String,
+    materials: String,
+    width: Option<usize>,
+    height: Option<usize>,
     image_path: String,
     portfolio_id: String,
 }
 
 async fn add_art(cmd: AddArtCommand) {
-    let img_data = std::fs::read(cmd.image_path).unwrap();
+    let img_data = std::fs::read(cmd.image_path.as_str()).unwrap();
     let encoded_img_data = base64::encode(img_data);
 
     #[derive(Serialize)]
@@ -92,13 +95,22 @@ async fn add_art(cmd: AddArtCommand) {
     struct ReqBody {
         artist_id: Uuid,
         title: String,
+        materials: String,
+        size: Option<(usize, usize)>,
         image_data: String,
         portfolio_id: String,
     }
 
+    let size = cmd
+        .width
+        .as_ref()
+        .and_then(|w| cmd.height.as_ref().map(|h| (*w, *h)));
+
     let body = ReqBody {
         artist_id: cmd.artist_id,
         title: cmd.title,
+        materials: cmd.materials,
+        size,
         image_data: encoded_img_data,
         portfolio_id: cmd.portfolio_id,
     };

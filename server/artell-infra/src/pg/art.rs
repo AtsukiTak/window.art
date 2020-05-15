@@ -1,6 +1,6 @@
 use super::{schema::arts, Connection, Postgres};
 use artell_domain::{
-    art::{Art, ArtId, ArtRepository},
+    art::{Art, ArtId, ArtRepository, Size},
     artist::ArtistId,
 };
 use diesel::prelude::*;
@@ -39,16 +39,30 @@ struct QueriedArt {
     id: Uuid,
     artist_id: Uuid,
     title: String,
+    materials: String,
+    width: Option<i32>,
+    height: Option<i32>,
     image_name: String,
     portfolio_id: String,
 }
 
 impl Into<Art> for QueriedArt {
     fn into(self) -> Art {
+        let size = match (self.width, self.height) {
+            (None, None) => None,
+            (Some(width), Some(height)) => Some(Size {
+                width: width as usize,
+                height: height as usize,
+            }),
+            _ => unreachable!(),
+        };
+
         Art {
             id: ArtId(self.id),
             artist_id: ArtistId(self.artist_id),
             title: self.title,
+            materials: self.materials,
+            size,
             image_name: self.image_name,
             portfolio_id: self.portfolio_id,
         }
@@ -62,6 +76,9 @@ fn find_by_id(conn: Connection, id: Uuid) -> anyhow::Result<Option<Art>> {
             arts::id,
             arts::artist_id,
             arts::title,
+            arts::materials,
+            arts::width,
+            arts::height,
             arts::image_name,
             arts::portfolio_id,
         ))
@@ -81,6 +98,9 @@ struct NewArt<'a> {
     id: &'a Uuid,
     artist_id: &'a Uuid,
     title: &'a str,
+    materials: &'a str,
+    width: Option<i32>,
+    height: Option<i32>,
     image_name: &'a str,
     portfolio_id: &'a str,
 }
@@ -91,6 +111,9 @@ impl<'a> From<&'a Art> for NewArt<'a> {
             id: &art.id.0,
             artist_id: &art.artist_id.0,
             title: art.title.as_str(),
+            materials: art.materials.as_str(),
+            width: art.size.map(|size| size.width as i32),
+            height: art.size.map(|size| size.height as i32),
             image_name: art.image_name.as_str(),
             portfolio_id: art.portfolio_id.as_str(),
         }

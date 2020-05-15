@@ -9,6 +9,9 @@ use uuid::Uuid;
 pub struct Params {
     pub artist_id: Uuid,
     pub title: String,
+    pub materials: String,
+    // (width, height)
+    pub size: Option<(usize, usize)>,
     pub image_data: Bytes,
     pub portfolio_id: String,
 }
@@ -43,7 +46,14 @@ pub async fn admin_add_art(
     image_repo.save(image).await?;
 
     // artを作成、保存
-    let art = Art::new(artist.id, params.title, image_name, params.portfolio_id)?;
+    let art = Art::new(
+        artist.id,
+        params.title,
+        params.materials,
+        params.size,
+        image_name,
+        params.portfolio_id,
+    )?;
     let art_id = art.id;
     art_repo.save(art).await?;
 
