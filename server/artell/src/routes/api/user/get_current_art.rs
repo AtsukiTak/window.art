@@ -8,6 +8,8 @@ use warp::{reject::Rejection, Filter};
 pub struct ResBody<'a> {
     art_id: &'a Uuid,
     art_title: &'a str,
+    art_materials: &'a str,
+    art_size: Option<(usize, usize)>,
     artist_name: &'a str,
     image_url: &'a str,
     portfolio_id: &'a str,
@@ -34,6 +36,8 @@ async fn handler(config: Config) -> Result<Response, Error> {
     Ok(response_ok(&ResBody {
         art_id: &current_art.art.id.0,
         art_title: current_art.art.title.as_str(),
+        art_materials: current_art.art.materials.as_str(),
+        art_size: current_art.art.size.map(|size| (size.width, size.height)),
         artist_name: &current_art.artist.name.as_str(),
         image_url: current_art.image_url.as_str(),
         portfolio_id: current_art.art.portfolio_id.as_str(),
