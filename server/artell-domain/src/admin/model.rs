@@ -1,5 +1,8 @@
-use crate::commons::{access_token::AccessToken, cred::Cred};
 use chrono::Duration;
+use rego_domain::{
+    access_token::{AccessToken, AccessTokenBody},
+    cred::Cred,
+};
 use uuid::Uuid;
 
 pub struct Admin {
@@ -35,14 +38,30 @@ impl Admin {
             cred,
         })
     }
+}
 
-    pub fn publish_access_token(
-        &self,
-        pass: &str,
-        exp: Duration,
-    ) -> Result<AccessToken<AdminId>, Error> {
+/*
+ * ===========
+ * AccessToken
+ * ===========
+ */
+#[derive(Serialize, Deserialize, Debug, Clone, Copy)]
+pub struct AdminAccessTokenBody {
+    pub id: Uuid,
+}
+
+impl AccessTokenBody for AdminAccessTokenBody {
+    fn type_name() -> &'static str {
+        "admin"
+    }
+}
+
+impl Admin {
+    pub fn publish_access_token(&self, pass: &str, exp: Duration) -> Result<AccessToken, Error> {
         self.cred.verify(pass).map_err(|_| Error::InvalidPassword)?;
 
-        Ok(AccessToken::new(self.id, exp))
+        let body = AdminAccessTokenBody { id: self.id.0 };
+
+        AccessToken::new(&body, exp).map_err(|_| Error::InvalidPassword)
     }
 }
