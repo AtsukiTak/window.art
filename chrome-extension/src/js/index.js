@@ -2,7 +2,6 @@ window.onload = function() {
   fetch("https://artell.herokuapp.com/api/v1/user/get_current_art")
     .then(res => res.json())
     .then(json => {
-      this.console.log(json)
       var imgEle = document.getElementById("works");
       var captionEle = document.getElementById("caption");
       var titleEle = document.getElementById("title");
@@ -14,7 +13,7 @@ window.onload = function() {
       titleEle.textContent = json.artTitle;
       artistEle.textContent = json.artistName;
       materialsEle.textContent = json.artMaterials;
-      sizeEle.textContent = json.artSize[0] + " * " + json.artSize[1];
+      sizeEle.textContent = json.artSize[0] + " x " + json.artSize[1] + " mm ";
 
       // ポートフォリオへのリンクの設定
       var encodedArtistName = encodeURI(json.artistName);
