@@ -6,10 +6,14 @@ window.onload = function() {
       var captionEle = document.getElementById("caption");
       var titleEle = document.getElementById("title");
       var artistEle = document.getElementById("artist");
+      var materialsEle = document.getElementById("materials");
+      var sizeEle = document.getElementById("size");
 
       // caption情報の設定
       titleEle.textContent = json.artTitle;
       artistEle.textContent = json.artistName;
+      materialsEle.textContent = json.artMaterials;
+      sizeEle.textContent = json.artSize[0] + " x " + json.artSize[1] + " mm ";
 
       // ポートフォリオへのリンクの設定
       var encodedArtistName = encodeURI(json.artistName);
