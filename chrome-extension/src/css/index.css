@@ -34,16 +34,12 @@ img.show {
   opacity: 0;
   text-align: left;
   padding: 0px;
+  animation: appeare 3s ease 3s 1 normal forwards running;
 }
 
-.img-container:hover + #caption-container {
-  transition-duration: 1s;
-  opacity: 0.9;
-}
-
-#caption-container:hover {
-  transition-duration: 1s;
-  opacity: 0.9;
+@keyframes appeare { 
+  0% {opacity: 0}
+  100% {opacity: 1}
 }
 
 .title {
@@ -51,25 +47,23 @@ img.show {
   font-size: 16px;
   font-weight: 500;
   letter-spacing: 2.4px;
-  color: #444444;
+  color: #555555;
 }
 
 .artist {
-  margin: 8px;
-  margin-bottom: 20px;
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 1.83px;
-  color: #a1a1a1;
-}
-
-.materials {
-  margin: 8px;
-  margin-bottom: 4px;
+  margin: 16px 0 4px 8px;
   font-size: 10px;
   font-weight: 500;
   letter-spacing: 1.83px;
-  color: #a1a1a1;
+  color: #666666;
+}
+
+.materials {
+  margin: 0 0 4px 8px;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 1.83px;
+  color: #666666;
 }
 
 .size {
@@ -77,6 +71,18 @@ img.show {
   margin-top: 0px;
   font-size: 10px;
   font-weight: 500;
+  letter-spacing: 1.83px;
+  color: #666666;
+}
+
+#link {
+  text-decoration: none;
+}
+
+.to-artist-page {
+  margin: 8px;
+  margin-top: 32px;
+  font-size: 12px;
   letter-spacing: 1.83px;
   color: #a1a1a1;
 }
