@@ -8,7 +8,6 @@ window.onload = function() {
       var artistEle = document.getElementById("artist");
       var materialsEle = document.getElementById("materials");
       var sizeEle = document.getElementById("size");
-      console.log(json.imageUrl)
       // caption情報の設定
       titleEle.textContent = json.artTitle;
       artistEle.textContent = json.artistName;
@@ -26,7 +25,6 @@ window.onload = function() {
 
       // 画像の設定
       imgEle.setAttribute("src", json.imageUrl);
-      console.log(imgEle);
       imgEle.onload = function() {
         imgEle.classList.add("show");
         // imgのwidthに合わせて、キャプションのwidthを決定する
