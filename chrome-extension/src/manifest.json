@@ -1,6 +1,6 @@
 {
   "name": "#40826d",
-  "version": "0.1",
+  "version": "0.2",
   "description": "Chromeブラウザの新規タブがアートギャラリーになるサービス、『#40826d』",
   "chrome_url_overrides" : {
     "newtab": "newtab.html"
