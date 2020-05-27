@@ -3,6 +3,8 @@ extern crate serde;
 
 mod get_schedules;
 
+const API_SERVER_BASE: &'static str = env!("API_SERVER_BASE");
+
 use chrono::{DateTime, Utc};
 use structopt::StructOpt;
 use uuid::Uuid;

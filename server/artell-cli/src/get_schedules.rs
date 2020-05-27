@@ -1,11 +1,10 @@
+use crate::API_SERVER_BASE;
 use chrono::{DateTime, Utc};
 use structopt::StructOpt;
 use uuid::Uuid;
 
 #[derive(StructOpt, Debug)]
-pub struct Command {
-    server_url: String,
-}
+pub struct Command {}
 
 #[derive(Deserialize, Debug)]
 struct ResBody {
@@ -18,9 +17,9 @@ struct ResSchedule {
     activate_at: DateTime<Utc>,
 }
 
-pub async fn execute(cmd: Command) {
+pub async fn execute(_: Command) {
     let res = reqwest::Client::new()
-        .get(&format!("{}/api/v1/admin/get_schedules", cmd.server_url))
+        .get(&format!("{}/api/v1/admin/get_schedules", API_SERVER_BASE))
         .send()
         .await
         .unwrap()
