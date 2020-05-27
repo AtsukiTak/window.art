@@ -42,6 +42,7 @@ pub fn route(config: Config) -> impl Filter<Extract = (impl Reply,), Error = Rej
 
     let routes = combine!(
         user::get_current_art::route(config.clone()),
+        admin::get_schedules::route(config.clone()),
         admin::add_art::route(config.clone()),
         admin::add_schedule::route(config.clone()),
         admin::add_artist::route(config.clone())

@@ -8,9 +8,7 @@ pub enum Error {
     Others(#[from] anyhow::Error),
 }
 
-pub async fn admin_add_schedule(
-    scheduler_repo: impl SchedulerRepository,
-) -> Result<Scheduler, Error> {
+pub async fn execute(scheduler_repo: impl SchedulerRepository) -> Result<Scheduler, Error> {
     let scheduler = scheduler_repo
         .find()
         .await?
