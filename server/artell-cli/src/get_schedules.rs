@@ -1,5 +1,5 @@
 use crate::API_SERVER_BASE;
-use chrono::{DateTime, Utc};
+use chrono::{DateTime, FixedOffset, Utc};
 use structopt::StructOpt;
 use uuid::Uuid;
 
@@ -27,5 +27,10 @@ pub async fn execute(_: Command) {
         .await
         .unwrap();
 
-    println!("{:?}", res);
+    let jst_offset = FixedOffset::east(9 * 3600);
+
+    for schedule in res.schedules {
+        let activate_jst = schedule.activate_at + jst_offset;
+        println!("{}   {}", activate_jst, schedule.art_id);
+    }
 }
