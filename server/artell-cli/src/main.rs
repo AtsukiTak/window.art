@@ -1,5 +1,9 @@
+#[macro_use]
+extern crate serde;
+
+mod get_schedules;
+
 use chrono::{DateTime, Utc};
-use serde::Serialize;
 use structopt::StructOpt;
 use uuid::Uuid;
 
@@ -9,6 +13,7 @@ enum Command {
     AddArtist(AddArtistCommand),
     AddArt(AddArtCommand),
     AddSchedule(AddScheduleCommand),
+    GetSchedules(get_schedules::Command),
 }
 
 #[tokio::main]
@@ -18,6 +23,7 @@ async fn main() {
         Command::AddArtist(cmd) => add_artist(cmd).await,
         Command::AddArt(cmd) => add_art(cmd).await,
         Command::AddSchedule(cmd) => add_schedule(cmd).await,
+        Command::GetSchedules(cmd) => get_schedules::execute(cmd).await,
     };
 }
 
