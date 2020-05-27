@@ -14,7 +14,7 @@ pub struct Command {
     width: Option<usize>,
     height: Option<usize>,
     image_path: String,
-    portfolio_id: String,
+    portfolio_link: String,
 }
 
 #[derive(Serialize)]
@@ -25,7 +25,7 @@ struct ReqBody {
     materials: String,
     size: Option<(usize, usize)>,
     image_data: String,
-    portfolio_id: String,
+    portfolio_link: String,
 }
 
 pub async fn execute(cmd: Command) {
@@ -43,7 +43,7 @@ pub async fn execute(cmd: Command) {
         materials: cmd.materials,
         size,
         image_data: encoded_img_data,
-        portfolio_id: cmd.portfolio_id,
+        portfolio_link: cmd.portfolio_link,
     };
 
     let res = reqwest::Client::new()

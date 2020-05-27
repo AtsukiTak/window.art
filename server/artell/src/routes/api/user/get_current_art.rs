@@ -12,7 +12,7 @@ pub struct ResBody<'a> {
     art_size: Option<(usize, usize)>,
     artist_name: &'a str,
     image_url: &'a str,
-    portfolio_id: &'a str,
+    portfolio_link: &'a str,
 }
 
 pub fn route(config: Config) -> impl Filter<Extract = (Response,), Error = Rejection> + Clone {
@@ -40,6 +40,6 @@ async fn handler(config: Config) -> Result<Response, Error> {
         art_size: current_art.art.size.map(|size| (size.width, size.height)),
         artist_name: &current_art.artist.name.as_str(),
         image_url: current_art.image_url.as_str(),
-        portfolio_id: current_art.art.portfolio_id.as_str(),
+        portfolio_link: current_art.art.portfolio_link.as_str(),
     }))
 }

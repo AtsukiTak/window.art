@@ -10,7 +10,7 @@ pub struct Art {
     pub materials: String,
     pub size: Option<Size>,
     pub image_name: String,
-    pub portfolio_id: String,
+    pub portfolio_link: String,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -32,8 +32,8 @@ impl std::fmt::Display for ArtId {
 pub enum Error {
     #[error("title must not be empty")]
     EmptyTitle,
-    #[error("portfolio_id must not be empty")]
-    EmptyPortfolioId,
+    #[error("portfolio_link must not be empty")]
+    EmptyPortfolioLink,
 }
 
 impl Art {
@@ -48,14 +48,14 @@ impl Art {
         materials: String,
         size: Option<(usize, usize)>, // (width, height)
         image_name: String,
-        portfolio_id: String,
+        portfolio_link: String,
     ) -> Result<Self, Error> {
         if title.is_empty() {
             return Err(Error::EmptyTitle);
         }
 
-        if portfolio_id.is_empty() {
-            return Err(Error::EmptyPortfolioId);
+        if portfolio_link.is_empty() {
+            return Err(Error::EmptyPortfolioLink);
         }
 
         let size = size.map(|(width, height)| Size { width, height });
@@ -67,7 +67,7 @@ impl Art {
             materials,
             size,
             image_name,
-            portfolio_id,
+            portfolio_link,
         })
     }
 }

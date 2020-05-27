@@ -14,7 +14,7 @@ pub struct ReqBody {
     size: Option<(usize, usize)>,
     // base64 encoded
     image_data: String,
-    portfolio_id: String,
+    portfolio_link: String,
 }
 
 pub fn route(config: Config) -> impl Filter<Extract = (Response,), Error = Rejection> + Clone {
@@ -35,7 +35,7 @@ async fn handler(config: Config, body: ReqBody) -> Result<Response, Error> {
         materials: body.materials,
         size: body.size,
         image_data: image_bytes,
-        portfolio_id: body.portfolio_id,
+        portfolio_link: body.portfolio_link,
     };
 
     usecase::admin_add_art(

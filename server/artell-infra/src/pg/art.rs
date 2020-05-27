@@ -43,7 +43,7 @@ struct QueriedArt {
     width: Option<i32>,
     height: Option<i32>,
     image_name: String,
-    portfolio_id: String,
+    portfolio_link: String,
 }
 
 impl Into<Art> for QueriedArt {
@@ -64,7 +64,7 @@ impl Into<Art> for QueriedArt {
             materials: self.materials,
             size,
             image_name: self.image_name,
-            portfolio_id: self.portfolio_id,
+            portfolio_link: self.portfolio_link,
         }
     }
 }
@@ -80,7 +80,7 @@ fn find_by_id(conn: Connection, id: Uuid) -> anyhow::Result<Option<Art>> {
             arts::width,
             arts::height,
             arts::image_name,
-            arts::portfolio_id,
+            arts::portfolio_link,
         ))
         .first::<QueriedArt>(&conn)
         .optional()?
@@ -102,7 +102,7 @@ struct NewArt<'a> {
     width: Option<i32>,
     height: Option<i32>,
     image_name: &'a str,
-    portfolio_id: &'a str,
+    portfolio_link: &'a str,
 }
 
 impl<'a> From<&'a Art> for NewArt<'a> {
@@ -115,7 +115,7 @@ impl<'a> From<&'a Art> for NewArt<'a> {
             width: art.size.map(|size| size.width as i32),
             height: art.size.map(|size| size.height as i32),
             image_name: art.image_name.as_str(),
-            portfolio_id: art.portfolio_id.as_str(),
+            portfolio_link: art.portfolio_link.as_str(),
         }
     }
 }

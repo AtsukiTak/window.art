@@ -16,7 +16,7 @@ table! {
         artist_id -> Uuid,
         title -> Text,
         image_name -> Text,
-        portfolio_id -> Text,
+        portfolio_link -> Text,
         materials -> Text,
         width -> Nullable<Int4>,
         height -> Nullable<Int4>,

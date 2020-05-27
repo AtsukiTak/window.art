@@ -13,7 +13,7 @@ pub struct Params {
     // (width, height)
     pub size: Option<(usize, usize)>,
     pub image_data: Bytes,
-    pub portfolio_id: String,
+    pub portfolio_link: String,
 }
 
 #[derive(Error, Debug)]
@@ -52,7 +52,7 @@ pub async fn admin_add_art(
         params.materials,
         params.size,
         image_name,
-        params.portfolio_id,
+        params.portfolio_link,
     )?;
     let art_id = art.id;
     art_repo.save(art).await?;
