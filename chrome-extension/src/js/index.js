@@ -13,15 +13,14 @@ window.onload = function() {
       artistEle.textContent = json.artistName;
       materialsEle.textContent = json.artMaterials;
       if (json.artSize === null) {
-        sizeEle.textContent = ""
+        sizeEle.textContent = "";
       } else {
-        sizeEle.textContent = json.artSize[0] + " x " + json.artSize[1] + " mm ";
+        sizeEle.textContent =
+          json.artSize[0] + " x " + json.artSize[1] + " mm ";
       }
 
       // ポートフォリオへのリンクの設定
-      var encodedArtistName = encodeURI(json.artistName);
-      var portoflioUrl = `https://portfolio.artell.life/${encodedArtistName}/${json.portfolioId}/`;
-      document.getElementById("link").setAttribute("href", portoflioUrl);
+      document.getElementById("link").setAttribute("href", json.portfolioLink);
 
       // 画像の設定
       imgEle.setAttribute("src", json.imageUrl);
