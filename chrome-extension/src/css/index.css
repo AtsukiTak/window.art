@@ -21,6 +21,7 @@ body {
 }
 
 img {
+  display: none;
   max-height: 94vh;
   max-width: 70vw;
   vertical-align: middle;
@@ -28,6 +29,7 @@ img {
 }
 
 img.show {
+  display: block;
   animation: fadeIn 2s ease 0s 1 normal;
   -webkit-animation: fadeIn 2s ease 0s 1 normal;
 }
