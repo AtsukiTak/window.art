@@ -8,7 +8,6 @@ body {
   font-family: monospace;
 }
 
-
 .flex-box {
   display: flex;
   align-items: flex-end;
