@@ -1,5 +1,11 @@
 body {
   margin: 0;
+  background-image: url(../images/white_wall.jpg);
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+  font-family: monospace;
 }
 
 .flex-box {
@@ -15,10 +21,15 @@ body {
 }
 
 img {
-  height: 94vh;
+  display: none;
+  max-height: 94vh;
+  max-width: 70vw;
+  vertical-align: middle;
+  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
 }
 
 img.show {
+  display: block;
   animation: fadeIn 2s ease 0s 1 normal;
   -webkit-animation: fadeIn 2s ease 0s 1 normal;
 }
@@ -29,8 +40,9 @@ img.show {
 }
 
 #caption-container {
-  width: 30vw;
+  width: 24vw;
   height: 100vh;
+  margin-left: 16px;
   opacity: 0;
   text-align: left;
   padding: 0px;
@@ -67,8 +79,7 @@ img.show {
 }
 
 .size {
-  margin: 8px;
-  margin-top: 0px;
+  margin: 0 8px 8px 8px;
   font-size: 10px;
   font-weight: 500;
   letter-spacing: 1.83px;
@@ -80,8 +91,9 @@ img.show {
 }
 
 .to-artist-page {
-  margin: 8px;
-  margin-top: 32px;
+  position: absolute;
+  bottom: 8px;
+  right: 24px;
   font-size: 12px;
   letter-spacing: 1.83px;
   color: #a1a1a1;
