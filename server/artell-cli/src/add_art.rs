@@ -11,10 +11,10 @@ pub struct Command {
     artist_id: Uuid,
     title: String,
     materials: String,
-    width: Option<usize>,
-    height: Option<usize>,
     image_path: String,
     portfolio_link: String,
+    width: Option<usize>,
+    height: Option<usize>,
 }
 
 #[derive(Serialize)]
