@@ -3,7 +3,6 @@ window.onload = function() {
     .then(res => res.json())
     .then(json => {
       var imgEle = document.getElementById("works");
-      var captionEle = document.getElementById("caption");
       var titleEle = document.getElementById("title");
       var artistEle = document.getElementById("artist");
       var materialsEle = document.getElementById("materials");
@@ -26,8 +25,6 @@ window.onload = function() {
       imgEle.setAttribute("src", json.imageUrl);
       imgEle.onload = function() {
         imgEle.classList.add("show");
-        // imgのwidthに合わせて、キャプションのwidthを決定する
-        captionEle.style.width = imgEle.width + "px";
       };
     });
 };
