@@ -1,5 +1,5 @@
 window.onload = function() {
-  fetch("https://artell.herokuapp.com/api/v1/user/get_current_art")
+  fetch("https://portfolio.artell.life/api/ichibanchi/art")
     .then(res => res.json())
     .then(json => {
       var imgEle = document.getElementById("works");
@@ -7,6 +7,7 @@ window.onload = function() {
       var artistEle = document.getElementById("artist");
       var materialsEle = document.getElementById("materials");
       var sizeEle = document.getElementById("size");
+
       // caption情報の設定
       titleEle.textContent = json.artTitle;
       artistEle.textContent = json.artistName;
