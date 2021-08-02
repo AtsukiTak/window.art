@@ -2,30 +2,27 @@ window.onload = function() {
   fetch("https://portfolio.artell.life/api/ichibanchi/art")
     .then(res => res.json())
     .then(json => {
-      var imgEle = document.getElementById("works");
-      var titleEle = document.getElementById("title");
-      var artistEle = document.getElementById("artist");
-      var materialsEle = document.getElementById("materials");
-      var sizeEle = document.getElementById("size");
-
-      // caption情報の設定
-      titleEle.textContent = json.artTitle;
-      artistEle.textContent = json.artistName;
-      materialsEle.textContent = json.artMaterials;
-      if (json.artSize === null) {
-        sizeEle.textContent = "";
-      } else {
-        sizeEle.textContent =
-          json.artSize[0] + " x " + json.artSize[1] + " mm ";
-      }
-
-      // ポートフォリオへのリンクの設定
-      document.getElementById("link").setAttribute("href", json.portfolioLink);
 
       // 画像の設定
+      var imgEle = document.querySelector(".image");
       imgEle.setAttribute("src", json.imageUrl);
       imgEle.onload = function() {
-        imgEle.classList.add("show");
+        // 画像の位置を設定
+        var imgWidth = imgEle.clientWidth;
+        var viewWidth = document.body.clientWidth;
+        imgEle.style.marginLeft = `${(viewWidth - imgWidth) / 4}px`;
+
+        // linkの設定
+        let linkElement = document.querySelector(".link");
+        if (imgWidth > viewWidth * 0.7) {
+          linkElement.classList.add("vertical");
+        }
+        linkElement.setAttribute("href", json.portfolioLink);
+        linkElement.classList.add("show");
+
+        // 画像とlinkの表示
+        var itemsEle = document.querySelector(".items");
+        itemsEle.classList.add("show");
       };
     });
 };

@@ -1,100 +1,89 @@
 body {
   margin: 0;
-  background-image: url(../images/white_wall.jpg);
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-size: cover;
-  font-family: monospace;
+  height: 100vh;
 }
 
-.flex-box {
+* {
+  box-sizing: border-box;
+}
+
+@font-face {
+  font-family: Montserrat;
+  font-weight: 400;
+  font-style: normal;
+  src: url("/Montserrat.ttf");
+}
+
+.items {
+  position: relative;
   display: flex;
-  align-items: center;
-  width: 100vw;
-  height: 100vh;
-}
-
-.img-container {
-  margin: 3vh auto;
-  text-align: center;
-}
-
-img {
-  display: none;
-  max-height: 94vh;
-  max-width: 70vw;
-  vertical-align: middle;
-  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
-}
-
-img.show {
-  display: block;
-  animation: fadeIn 2s ease 0s 1 normal;
-  -webkit-animation: fadeIn 2s ease 0s 1 normal;
-}
-
-@keyframes fadeIn { 
-  0% {opacity: 0}
-  100% {opacity: 1}
-}
-
-#caption-container {
-  width: 24vw;
-  height: 100vh;
-  margin-left: 16px;
+  height: 100%;
+  padding: 68px 0;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: flex-end;
   opacity: 0;
-  text-align: left;
-  padding: 0px;
-  animation: appeare 3s ease 3s 1 normal forwards running;
+  transition: opacity 2s ease-in;
 }
 
-@keyframes appeare { 
-  0% {opacity: 0}
-  100% {opacity: 1}
+.items.show {
+  opacity: 1;
 }
 
-.title {
-  margin: 80vh 8px 8px 8px;
-  font-size: 16px;
-  font-weight: 500;
-  letter-spacing: 2.4px;
-  color: #555555;
+.image {
+  display: block;
+  height: 100%;
+  box-shadow: 0 14px 28px rgb(0 0 0 / 25%), 0 10px 10px rgb(0 0 0 / 22%);
 }
 
-.artist {
-  margin: 16px 0 4px 8px;
-  font-size: 10px;
-  font-weight: 500;
-  letter-spacing: 1.83px;
-  color: #666666;
-}
-
-.materials {
-  margin: 0 0 4px 8px;
-  font-size: 10px;
-  font-weight: 500;
-  letter-spacing: 1.83px;
-  color: #666666;
-}
-
-.size {
-  margin: 0 8px 8px 8px;
-  font-size: 10px;
-  font-weight: 500;
-  letter-spacing: 1.83px;
-  color: #666666;
-}
-
-#link {
+/*
+ * link周りのCSS
+ * */
+.link {
+  position: absolute;
+  right: 50px;
+  display: none;
+  align-items: baseline;
   text-decoration: none;
 }
 
-.to-artist-page {
-  position: absolute;
-  bottom: 8px;
-  right: 24px;
+.link:visited {
+  text-decoration: none;
+}
+
+.link.show {
+  display: flex;
+}
+
+.link.vertical {
+  transform-origin: bottom right;
+  transform: rotate(90deg);
+}
+
+.link-underline {
+  height: 1px;
+  min-height: 1px;
+  max-height: 1px;
+  width: 24px;
+  min-width: 24px;
+  max-width: 24px;
+  margin-right: 8px;
+  vertical-align: baseline;
+  border-bottom: 0.5px solid #222222;
+}
+
+.link-text {
+  margin-right: 16px;
+  color: #111111;
+  font-family: Montserrat;
   font-size: 12px;
-  letter-spacing: 1.83px;
-  color: #a1a1a1;
+  line-height: 15px;
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+.link-logo {
+  display: block;
+  width: 75px;
 }
