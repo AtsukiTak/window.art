@@ -1,12 +1,12 @@
 {
   "name": "__MSG_appName__",
-  "version": "0.3.3",
+  "version": "1.0.0",
   "description": "__MSG_appDesc__",
   "default_locale": "en",
   "chrome_url_overrides" : {
     "newtab": "newtab.html"
   },
-  "browser_action": {
+  "action": {
     "default_icon": {
       "16": "icons/icon16.png",
       "32": "icons/icon32.png",
@@ -20,5 +20,5 @@
     "48": "icons/icon48.png",
     "128": "icons/icon128.png"
   },
-  "manifest_version": 2
+  "manifest_version": 3
 }
